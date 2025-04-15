@@ -20,7 +20,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BarChartAppTheme {
-                    BarChart()
+                    //RandomBarChart()
+                    ManualBarChart()
+                    //LineChart()
                 }
             }
         }
