@@ -48,5 +48,11 @@ fun SetupNavGraph(
         ) {
             ScatterPlotImagesScreen(navController)
         }
+
+        composable(
+            route = Screen.StemAndLeafPlot.route
+        ) {
+            StemAndLeafPlotScreen(navController)
+        }
     }
 }

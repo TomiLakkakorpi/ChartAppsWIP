@@ -25,42 +25,42 @@ fun HomeScreen(navController: NavController) {
                 modifier = Modifier.clickable {
                     navController.navigate(route = Screen.BarChart.route)
                 },
-                text = "Bar chart"
+                text = "Pylväsdiagrammi"
             )
 
             Text( // Pie Chart
                 modifier = Modifier.clickable {
                     navController.navigate(route = Screen.PieChart.route)
                 },
-                text = "Pie chart"
+                text = "Piirakkadiagrammi"
             )
 
             Text( // Line Chart
                 modifier = Modifier.clickable {
                     navController.navigate(route = Screen.LineChart.route)
                 },
-                text = "Line chart"
+                text = "Viivadiagrammi"
             )
 
             Text( // Scatter Plot
                 modifier = Modifier.clickable {
                     navController.navigate(route = Screen.ScatterPlot.route)
                 },
-                text = "Scatter plot"
+                text = "Hajakuvaaja"
             )
 
             Text( // Scatter Plot With Images
                 modifier = Modifier.clickable {
                     navController.navigate(route = Screen.ScatterPlotImages.route)
                 },
-                text = "Scatter plot with images"
+                text = "Hajakuvaaja kuvilla"
             )
 
             Text( // Stem And Leaf Plot
                 modifier = Modifier.clickable {
                     navController.navigate(route = Screen.StemAndLeafPlot.route)
                 },
-                text = "Stem and leaf plot"
+                text = "Stem and leaf -kuva"
             )
         }
     }
