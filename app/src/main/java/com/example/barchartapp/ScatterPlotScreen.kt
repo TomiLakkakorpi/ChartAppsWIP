@@ -19,14 +19,14 @@ fun ScatterPlotScreen(navController: NavController) {
     ) {
         Column () {
             Box() {
-                TODO()
+                // Code here for Scatter Plot screen
             }
 
             Text(
                 modifier = Modifier.clickable {
-                    navController.popBackStack()
+                    navController.navigateUp()
                 },
-                text = "Takaisin",
+                text = "Takaisin päävalikkoon",
                 fontSize = MaterialTheme.typography.titleMedium.fontSize
             )
         }

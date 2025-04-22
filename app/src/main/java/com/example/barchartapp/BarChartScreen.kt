@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,55 +27,76 @@ import co.yml.charts.ui.barchart.models.BarStyle
 @Composable
 fun BarChartScreen(navController: NavController) {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .height(800.dp)
+            .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Column() {
             Box() {
-                val maxRange = 1000000
-                val yStepSize = 10
+                val maxRange = 700000F
+                val yStepSize = 7
 
                 val list = arrayListOf(
                     BarData(
                         point = Point(1F, 681802F),
-                        Color.Gray,
-                        label = "Helsinki",),
+                        Color.Cyan,
+                        label = "Helsinki",
+                        ),
+
                     BarData(
                         point = Point(2F, 318507F),
-                        Color.Gray,
-                        label = "Espoo",),
+                        Color.Cyan,
+                        label = "Espoo",
+                        ),
+
                     BarData(
                         point = Point(3F, 258770F),
-                        Color.Gray,
-                        label = "Tampere",),
+                        Color.Cyan,
+                        label = "Tampere",
+                        ),
+
                     BarData(
                         point = Point(4F, 250073F),
-                        Color.Gray,
-                        label = "Vantaa",),
+                        Color.Cyan,
+                        label = "Vantaa",
+                        ),
+
                     BarData(
                         point = Point(5F, 215530F),
-                        Color.Gray,
-                        label = "Oulu",),
-                    /* BarData(
-                        point = Point(6F, 204618F),
-                        Color.Blue,
-                        label = "Turku",),
+                        Color.Cyan,
+                        label = "Oulu",
+                        ),
+
                     BarData(
+                        point = Point(6F, 204618F),
+                        Color.Cyan,
+                        label = "Turku",
+                        ),
+
+                    /* BarData(
                         point = Point(7F, 148622F),
-                        Color.Blue,
-                        label = "Jyväskylä",),
+                        Color.Cyan,
+                        label = "Jyväskylä",
+                        ),
+
                     BarData(
                         point = Point(8F, 124825F),
-                        Color.Blue,
-                        label = "Kuopio",),
+                        Color.Cyan,
+                        label = "Kuopio",
+                        ),
+
                     BarData(
                         point = Point(9F, 121202F),
-                        Color.Blue,
-                        label = "Lahti",),
+                        Color.Cyan,
+                        label = "Lahti",
+                        ),
+
                     BarData(
                         point = Point(10F, 83334F),
-                        Color.Blue,
-                        label = "Pori",), */
+                        Color.Cyan,
+                        label = "Pori",
+                        ), */
                 )
 
                 val xAxisData = AxisData.Builder()
@@ -82,7 +104,8 @@ fun BarChartScreen(navController: NavController) {
                     .steps(list.size - 1)
                     .bottomPadding(40.dp)
                     .axisLabelAngle(20f)
-                    .startDrawPadding(48.dp)
+                    .startDrawPadding(25.dp)
+                    //.startPadding(10.dp)
                     .labelData { index -> list[index].label }
                     .build()
 
@@ -103,16 +126,19 @@ fun BarChartScreen(navController: NavController) {
                     ),
                     showYAxis = true,
                     showXAxis = true,
-                    horizontalExtraSpace = 20.dp
+                    horizontalExtraSpace = 50.dp
                 )
                 BarChart(modifier = Modifier.height(350.dp), barChartData = barChartData)
             }
 
             Text(
-                modifier = Modifier.clickable {
-                    navController.popBackStack()
-                },
-                text = "Takaisin",
+                modifier = Modifier
+                    .padding(20.dp)
+                    .clickable {
+                        navController.navigateUp()
+                    },
+                textAlign = TextAlign.Center,
+                text = "Takaisin päävalikkoon",
                 fontSize = MaterialTheme.typography.titleMedium.fontSize
             )
         }

@@ -19,14 +19,14 @@ fun StemAndLeafPlotScreen(navController: NavController) {
     ) {
         Column () {
             Box() {
-                TODO()
+                // Code here for stem and leaf plot screen
             }
 
             Text(
                 modifier = Modifier.clickable {
-                    navController.popBackStack()
+                    navController.navigateUp()
                 },
-                text = "Takaisin",
+                text = "Takaisin päävalikkoon",
                 fontSize = MaterialTheme.typography.titleMedium.fontSize
             )
         }

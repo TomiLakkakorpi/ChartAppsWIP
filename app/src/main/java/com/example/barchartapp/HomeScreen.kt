@@ -4,13 +4,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
@@ -21,46 +23,72 @@ fun HomeScreen(navController: NavController) {
         contentAlignment = Alignment.Center
     ) {
         Column () {
-            Text( // Bar Chart
-                modifier = Modifier.clickable {
-                    navController.navigate(route = Screen.BarChart.route)
-                },
-                text = "Pylväsdiagrammi"
+
+            // Bar Chart
+            Text(
+                text = "Diagrammit",
+                fontSize = 25.sp,
+                modifier = Modifier.padding(10.dp)
             )
 
-            Text( // Pie Chart
-                modifier = Modifier.clickable {
-                    navController.navigate(route = Screen.PieChart.route)
-                },
-                text = "Piirakkadiagrammi"
+            // Bar Chart
+            Text(
+                text = "1. Pylväsdiagrammi",
+                fontSize = 20.sp,
+                color = Color.Green,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .clickable { navController.navigate(route = Screen.BarChart.route) }
             )
 
-            Text( // Line Chart
-                modifier = Modifier.clickable {
-                    navController.navigate(route = Screen.LineChart.route)
-                },
-                text = "Viivadiagrammi"
+            // Pie Chart
+            Text(
+                text = "2. Piirakkadiagrammi",
+                fontSize = 20.sp,
+                color = Color.Green,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .clickable { navController.navigate(route = Screen.PieChart.route) }
             )
 
-            Text( // Scatter Plot
-                modifier = Modifier.clickable {
-                    navController.navigate(route = Screen.ScatterPlot.route)
-                },
-                text = "Hajakuvaaja"
+            // Line Chart
+            Text(
+                text = "3. Viivadiagrammi",
+                fontSize = 20.sp,
+                color = Color.Green,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .clickable { navController.navigate(route = Screen.LineChart.route) }
             )
 
-            Text( // Scatter Plot With Images
-                modifier = Modifier.clickable {
-                    navController.navigate(route = Screen.ScatterPlotImages.route)
-                },
-                text = "Hajakuvaaja kuvilla"
+            // Scatter Plot
+            Text(
+                text = "4. Hajakuvaaja",
+                fontSize = 20.sp,
+                color = Color.Red,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .clickable { navController.navigate(route = Screen.ScatterPlot.route) }
             )
 
-            Text( // Stem And Leaf Plot
-                modifier = Modifier.clickable {
-                    navController.navigate(route = Screen.StemAndLeafPlot.route)
-                },
-                text = "Stem and leaf -kuva"
+            // Scatter Plot With Images
+            Text(
+                text = "5. Hajakuvaaja kuvilla",
+                fontSize = 20.sp,
+                color = Color.Red,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .clickable { navController.navigate(route = Screen.ScatterPlotImages.route) }
+            )
+
+            // Stem And Leaf Plot
+            Text(
+                text = "6. Stem and leaf -kuva",
+                fontSize = 20.sp,
+                color = Color.Red,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .clickable { navController.navigate(route = Screen.StemAndLeafPlot.route) }
             )
         }
     }

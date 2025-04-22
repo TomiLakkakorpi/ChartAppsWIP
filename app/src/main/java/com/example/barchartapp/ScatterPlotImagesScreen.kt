@@ -19,14 +19,14 @@ fun ScatterPlotImagesScreen(navController: NavController) {
     ) {
         Column () {
             Box() {
-                TODO()
+                // Code here for Scatter plot screen with images
             }
 
             Text(
                 modifier = Modifier.clickable {
-                    navController.popBackStack()
+                    navController.navigateUp()
                 },
-                text = "Takaisin",
+                text = "Takaisin päävalikkoon",
                 fontSize = MaterialTheme.typography.titleMedium.fontSize
             )
         }

@@ -18,15 +18,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import co.yml.charts.axis.AxisData
 import co.yml.charts.common.components.Legends
 import co.yml.charts.common.model.PlotType
-import co.yml.charts.common.model.Point
 import co.yml.charts.common.utils.DataUtils
-import co.yml.charts.ui.barchart.BarChart
-import co.yml.charts.ui.barchart.models.BarChartData
-import co.yml.charts.ui.barchart.models.BarData
-import co.yml.charts.ui.barchart.models.BarStyle
 import co.yml.charts.ui.piechart.charts.PieChart
 import co.yml.charts.ui.piechart.models.PieChartConfig
 import co.yml.charts.ui.piechart.models.PieChartData
@@ -41,16 +35,16 @@ fun PieChartScreen(navController: NavController) {
             Box() {
                 val pieChartData = PieChartData(
                     slices = listOf(
-                        PieChartData.Slice("Helsinki 681802", 681802f, Color.Green),
-                        PieChartData.Slice("Espoo 318507", 318507f, Color.Blue),
-                        PieChartData.Slice("Tampere 258770", 258770f, Color.Red),
-                        PieChartData.Slice("Vantaa 250037", 250073f, Color.Yellow),
-                        PieChartData.Slice("Oulu 215503", 215503f, Color.Gray),
-                        PieChartData.Slice("Turku 204618", 204618f, Color.LightGray),
-                        PieChartData.Slice("Jyväskylä 148622", 148622f, Color.Cyan),
-                        PieChartData.Slice("Kuopio 124825", 124825f, Color.Magenta),
-                        PieChartData.Slice("Lahti 121202", 121202f, Color.White),
-                        PieChartData.Slice("Pori 83334", 83334f, Color.Black),
+                        PieChartData.Slice("Helsinki", 681802f, Color.Green),
+                        PieChartData.Slice("Espoo", 318507f, Color.Blue),
+                        PieChartData.Slice("Tampere", 258770f, Color.Red),
+                        PieChartData.Slice("Vantaa", 250073f, Color.Yellow),
+                        PieChartData.Slice("Oulu", 215503f, Color.Gray),
+                        PieChartData.Slice("Turku", 204618f, Color.LightGray),
+                        PieChartData.Slice("Jyväskylä", 148622f, Color.Cyan),
+                        PieChartData.Slice("Kuopio", 124825f, Color.Magenta),
+                        PieChartData.Slice("Lahti", 121202f, Color.White),
+                        PieChartData.Slice("Pori", 83334f, Color.Black),
                     ),
                     plotType = PlotType.Pie
                 )
@@ -58,6 +52,7 @@ fun PieChartScreen(navController: NavController) {
 
                 val pieChartConfig =
                     PieChartConfig(
+
                         labelVisible = true,
                         activeSliceAlpha = .9f,
                         isEllipsizeEnabled = true,
@@ -85,9 +80,9 @@ fun PieChartScreen(navController: NavController) {
 
             Text(
                 modifier = Modifier.clickable {
-                    navController.popBackStack()
+                    navController.navigateUp()
                 },
-                text = "Takaisin",
+                text = "Takaisin päävalikkoon",
                 fontSize = MaterialTheme.typography.titleMedium.fontSize
             )
         }
