@@ -37,15 +37,15 @@ fun LineChartScreen(navController: NavController) {
             Box() {
                 val pointsData: List<Point> =
                     listOf(
-                        Point(1f, 20f),
-                        Point(2f, 70f),
-                        Point(3f, 60f),
-                        Point(4f, 90f),
-                        Point(5f, 10f),
-                        Point(6f, 40f),
-                        Point(7f, 30f),
+                        Point(1f, 25f),
+                        Point(2f, 73f),
+                        Point(3f, 68f),
+                        Point(4f, 100f),
+                        Point(5f, 17f),
+                        Point(6f, 44f),
+                        Point(7f, 31f),
                         Point(8f, 2f),
-                        Point(9f, 40f),
+                        Point(9f, 49f),
                         Point(10f, 15f)
                     )
 

@@ -36,6 +36,12 @@ fun SetupNavGraph(
         }
 
         composable(
+            route = Screen.DonutChart.route
+        ) {
+            DonutChartScreen(navController)
+        }
+
+        composable(
             route = Screen.ScatterPlot.route
         ) {
             ScatterPlotScreen(navController)

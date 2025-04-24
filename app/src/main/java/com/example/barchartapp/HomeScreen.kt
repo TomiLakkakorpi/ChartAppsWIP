@@ -24,7 +24,7 @@ fun HomeScreen(navController: NavController) {
     ) {
         Column () {
 
-            // Bar Chart
+            // Header
             Text(
                 text = "Diagrammit",
                 fontSize = 25.sp,
@@ -61,9 +61,19 @@ fun HomeScreen(navController: NavController) {
                     .clickable { navController.navigate(route = Screen.LineChart.route) }
             )
 
+            // Line Chart
+            Text(
+                text = "4. Donitsidiagrammi",
+                fontSize = 20.sp,
+                color = Color.Green,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .clickable { navController.navigate(route = Screen.DonutChart.route) }
+            )
+
             // Scatter Plot
             Text(
-                text = "4. Hajakuvaaja",
+                text = "5. Hajakuvaaja",
                 fontSize = 20.sp,
                 color = Color.Red,
                 modifier = Modifier
@@ -73,7 +83,7 @@ fun HomeScreen(navController: NavController) {
 
             // Scatter Plot With Images
             Text(
-                text = "5. Hajakuvaaja kuvilla",
+                text = "6. Hajakuvaaja kuvilla",
                 fontSize = 20.sp,
                 color = Color.Red,
                 modifier = Modifier
@@ -83,7 +93,7 @@ fun HomeScreen(navController: NavController) {
 
             // Stem And Leaf Plot
             Text(
-                text = "6. Stem and leaf -kuva",
+                text = "7. Stem and leaf -kuva",
                 fontSize = 20.sp,
                 color = Color.Red,
                 modifier = Modifier

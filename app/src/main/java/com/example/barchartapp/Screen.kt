@@ -5,6 +5,7 @@ sealed class Screen(val route: String) {
     object BarChart: Screen(route = "barchart_screen")
     object PieChart: Screen(route = "piechart_screen")
     object LineChart: Screen(route = "linechart_screen")
+    object DonutChart: Screen(route = "donutchart_screen")
     object ScatterPlot: Screen(route = "scatterplot_screen")
     object ScatterPlotImages: Screen(route = "scatterplotimages_screen")
     object StemAndLeafPlot: Screen(route = "stemandleafplot_screen")

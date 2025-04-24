@@ -42,37 +42,37 @@ fun BarChartScreen(navController: NavController) {
                         point = Point(1F, 681802F),
                         Color.Cyan,
                         label = "Helsinki",
-                        ),
+                    ),
 
                     BarData(
                         point = Point(2F, 318507F),
                         Color.Cyan,
                         label = "Espoo",
-                        ),
+                    ),
 
                     BarData(
                         point = Point(3F, 258770F),
                         Color.Cyan,
                         label = "Tampere",
-                        ),
+                    ),
 
                     BarData(
                         point = Point(4F, 250073F),
                         Color.Cyan,
                         label = "Vantaa",
-                        ),
+                    ),
 
                     BarData(
                         point = Point(5F, 215530F),
                         Color.Cyan,
                         label = "Oulu",
-                        ),
+                    ),
 
                     BarData(
                         point = Point(6F, 204618F),
                         Color.Cyan,
                         label = "Turku",
-                        ),
+                    ),
 
                     /* BarData(
                         point = Point(7F, 148622F),
