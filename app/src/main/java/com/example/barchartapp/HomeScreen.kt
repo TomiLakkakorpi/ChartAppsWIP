@@ -100,6 +100,16 @@ fun HomeScreen(navController: NavController) {
                     .padding(10.dp)
                     .clickable { navController.navigate(route = Screen.StemAndLeafPlot.route) }
             )
+
+            // Bubble Chart
+            Text(
+                text = "8. Bubble Chart",
+                fontSize = 20.sp,
+                color = Color.Red,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .clickable { navController.navigate(route = Screen.BubbleChart.route) }
+            )
         }
     }
 }

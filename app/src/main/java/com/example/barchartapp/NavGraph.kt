@@ -58,5 +58,11 @@ fun SetupNavGraph(
         ) {
             StemAndLeafPlotScreen(navController)
         }
+
+        composable(
+            route = Screen.BubbleChart.route
+        ) {
+            BubbleChartScreen(navController)
+        }
     }
 }

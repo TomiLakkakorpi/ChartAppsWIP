@@ -9,4 +9,5 @@ sealed class Screen(val route: String) {
     object ScatterPlot: Screen(route = "scatterplot_screen")
     object ScatterPlotImages: Screen(route = "scatterplotimages_screen")
     object StemAndLeafPlot: Screen(route = "stemandleafplot_screen")
+    object BubbleChart: Screen(route = "bubblechart_screen")
 }
