@@ -64,5 +64,11 @@ fun SetupNavGraph(
         ) {
             BubbleChartScreen(navController)
         }
+
+        composable(
+            route = Screen.CustomComponent1.route
+        ) {
+            CustomComponent1(navController)
+        }
     }
 }

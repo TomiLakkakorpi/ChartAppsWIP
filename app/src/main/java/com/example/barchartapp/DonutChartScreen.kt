@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+
 import co.yml.charts.common.components.Legends
 import co.yml.charts.common.model.PlotType
 import co.yml.charts.common.utils.DataUtils
