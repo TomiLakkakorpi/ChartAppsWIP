@@ -66,9 +66,9 @@ fun SetupNavGraph(
         }
 
         composable(
-            route = Screen.CustomComponent1.route
+            route = Screen.CustomUIComponent1.route
         ) {
-            CustomComponent1(navController)
+            CustomUIComponent1(navController)
         }
     }
 }

@@ -113,12 +113,12 @@ fun HomeScreen(navController: NavController) {
 
             // Custom Component 1
             Text(
-                text = "9. Custom Component 1",
+                text = "9. Custom UI Component 1",
                 fontSize = 20.sp,
                 color = Color.Green,
                 modifier = Modifier
                     .padding(10.dp)
-                    .clickable { navController.navigate(route = Screen.CustomComponent1.route) }
+                    .clickable { navController.navigate(route = Screen.CustomUIComponent1.route) }
             )
         }
     }

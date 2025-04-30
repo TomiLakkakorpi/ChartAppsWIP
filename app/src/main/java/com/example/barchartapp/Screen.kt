@@ -10,5 +10,5 @@ sealed class Screen(val route: String) {
     object ScatterPlotImages: Screen(route = "scatterplotimages_screen")
     object StemAndLeafPlot: Screen(route = "stemandleafplot_screen")
     object BubbleChart: Screen(route = "bubblechart_screen")
-    object CustomComponent1: Screen(route = "customcomponent1_screen")
+    object CustomUIComponent1: Screen(route = "customuicomponent1_screen")
 }
