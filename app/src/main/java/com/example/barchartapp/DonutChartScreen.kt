@@ -73,6 +73,7 @@ fun DonutChartScreen(navController: NavController) {
                         isAnimationEnable = true,
                         chartPadding = 25,
                         labelFontSize = 42.sp,
+                        labelType = PieChartConfig.LabelType.PERCENTAGE
                     )
                 Column(
                     modifier = Modifier
