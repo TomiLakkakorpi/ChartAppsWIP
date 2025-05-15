@@ -1,17 +1,17 @@
 package com.example.barchartapp
 
-import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.TextField
@@ -25,6 +25,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.sp
 import co.yml.charts.axis.AxisData
 import co.yml.charts.common.model.Point
 import co.yml.charts.ui.linechart.LineChart
@@ -39,14 +40,18 @@ import co.yml.charts.ui.linechart.model.SelectionHighlightPopUp
 import co.yml.charts.ui.linechart.model.ShadowUnderLine
 import co.yml.charts.common.extensions.formatToSinglePrecision
 
-var index = 0F
-var list = mutableListOf<Point>()
-var listSize = 0
-var isListInitialized = false
+var lineChartListIndex = 0F
+var lineChartList = mutableListOf<Point>()
+var isLineChartListInitialized = false
+var doesLineChartListHaveData = false
 
 @Composable
 fun LineChartScreen(navController: NavController) {
     val context = LocalContext.current
+
+    var text by remember {
+        mutableStateOf("")
+    }
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -73,18 +78,30 @@ fun LineChartScreen(navController: NavController) {
                     ) */
             }
 
-            if(!isListInitialized) {
-                list.add(Point(0f, 0f))
-                isListInitialized = true
+            if(!isLineChartListInitialized) {
+                lineChartList.add(Point(0f, 0f))
+                lineChartList.add(Point(1f, 0f))
+                lineChartList.add(Point(2f, 0f))
+                lineChartList.add(Point(3f, 0f))
+                lineChartList.add(Point(4f, 0f))
+                lineChartList.add(Point(5f, 0f))
+                lineChartList.add(Point(6f, 0f))
+                lineChartList.add(Point(7f, 0f))
+                lineChartList.add(Point(8f, 0f))
+                lineChartList.add(Point(9f, 0f))
+                isLineChartListInitialized = true
+
+                text = " "
+                text = ""
             }
 
-            val steps = list.size
+            val steps = lineChartList.size
 
             val xAxisData = AxisData.Builder()
                 .axisStepSize(35.dp)
                 .topPadding(105.dp)
-                .steps(list.size - 1)
-                .labelData { i -> list[i].x.toInt().toString() }
+                .steps(lineChartList.size - 1)
+                .labelData { i -> lineChartList[i].x.toInt().toString() }
                 .labelAndAxisLinePadding(15.dp)
                 .build()
 
@@ -94,8 +111,8 @@ fun LineChartScreen(navController: NavController) {
                 .labelData { i ->
                     //val yMax = 100.0f
                     //val yMin = 0.0f
-                    val yMin = list.minOf { it.y }
-                    val yMax = list.maxOf { it.y }
+                    val yMin = lineChartList.minOf { it.y }
+                    val yMax = lineChartList.maxOf { it.y }
                     val yScale = (yMax - yMin) / steps
                     ((i * yScale) + yMin).formatToSinglePrecision()
                 }.build()
@@ -104,7 +121,7 @@ fun LineChartScreen(navController: NavController) {
                 linePlotData = LinePlotData(
                     lines = listOf(
                         Line(
-                            dataPoints = list,
+                            dataPoints = lineChartList,
                             LineStyle(),
                             IntersectionPoint(),
                             SelectionHighlightPoint(),
@@ -118,17 +135,20 @@ fun LineChartScreen(navController: NavController) {
                 gridLines = GridLines()
             )
 
-            var text by remember {
-                mutableStateOf("")
-            }
-
-            LineChart(
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp),
-                lineChartData = data
-            )
-            Log.d("ImeAction", "LineChart updated")
+                    .width(370.dp)
+                    .height(300.dp)
+
+            ) {
+                LineChart(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp),
+                    lineChartData = data
+                )
+                Log.d("ImeAction", "LineChart updated")
+            }
 
             TextField(
                 value = text,
@@ -145,14 +165,19 @@ fun LineChartScreen(navController: NavController) {
                 keyboardActions = KeyboardActions(
                     onDone = {
                         if(text.isNotEmpty()){
-                            if(index <= 9) {
-                                index++
-                                list.add(Point(index, text.toFloat(), ""))
-                                Log.d("ImeAction", "Value $text added to list in position $index")
+                            //if(index <= 9) {
+                                lineChartList[lineChartListIndex.toInt()] = Point(lineChartListIndex, text.toFloat())
+                                //list.add(Point(index, text.toFloat(), ""))
+                                Log.d("ImeAction", "Value $text added to list in position $lineChartListIndex")
                                 text = ""
-                            } else {
-                                Toast.makeText(context, "Maksimimäärä saavutettu", Toast.LENGTH_SHORT).show()
-                            }
+                                lineChartListIndex++
+
+                                if(doesLineChartListHaveData == false) {
+                                    doesLineChartListHaveData = true
+                                }
+                            //} else {
+                            //    Toast.makeText(context, "Maksimimäärä saavutettu", Toast.LENGTH_SHORT).show()
+                            //}
                         } else {
                             Toast.makeText(context, "Syötä arvo!", Toast.LENGTH_SHORT).show()
                         }
@@ -161,19 +186,59 @@ fun LineChartScreen(navController: NavController) {
             )
 
             Text(
-                modifier = Modifier.clickable {
+                modifier = Modifier
+                    .padding(20.dp)
+                    .clickable {
+                        if (doesLineChartListHaveData == true) {
 
-                },
+                            /* WIP
+                            val it = list.listIterator()
+
+                            if(it.hasNext()) {
+                                list[index.toInt()] = Point(index, 0f)
+                            }
+
+                            val it = list.listIterator()
+                            for (e in it) {
+                                if (e.length >  1) {
+                                    list[index.toInt()] = Point(index, text.toFloat())
+                                }
+                            } */
+
+                            lineChartList[0] = Point(0f, 0f)
+                            lineChartList[1] = Point(1f, 0f)
+                            lineChartList[2] = Point(2f, 0f)
+                            lineChartList[3] = Point(3f, 0f)
+                            lineChartList[4] = Point(4f, 0f)
+                            lineChartList[5] = Point(5f, 0f)
+                            lineChartList[6] = Point(6f, 0f)
+                            lineChartList[7] = Point(7f, 0f)
+                            lineChartList[8] = Point(8f, 0f)
+                            lineChartList[9] = Point(9f, 0f)
+
+
+                            lineChartListIndex = 0f
+
+                            Log.d("ImeAction", "List cleared")
+
+                            doesLineChartListHaveData = false
+
+                            text = " "
+                            text = ""
+                        }
+                    },
                 text = "Tyhjennä taulukko",
-                fontSize = MaterialTheme.typography.titleMedium.fontSize
+                fontSize = 20.sp
             )
 
             Text(
-                modifier = Modifier.clickable {
-                    navController.navigateUp()
-                },
+                modifier = Modifier
+                    .padding(20.dp)
+                    .clickable {
+                        navController.navigateUp()
+                    },
                 text = "Takaisin päävalikkoon",
-                fontSize = MaterialTheme.typography.titleMedium.fontSize
+                fontSize = 20.sp
             )
         }
     }

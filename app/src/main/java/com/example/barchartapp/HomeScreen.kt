@@ -41,19 +41,9 @@ fun HomeScreen(navController: NavController) {
                     .clickable { navController.navigate(route = Screen.BarChart.route) }
             )
 
-            // Pie Chart
-            Text(
-                text = "2. Piirakkadiagrammi",
-                fontSize = 20.sp,
-                color = Color.Green,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .clickable { navController.navigate(route = Screen.PieChart.route) }
-            )
-
             // Line Chart
             Text(
-                text = "3. Viivadiagrammi",
+                text = "2. Viivadiagrammi",
                 fontSize = 20.sp,
                 color = Color.Green,
                 modifier = Modifier
@@ -63,7 +53,27 @@ fun HomeScreen(navController: NavController) {
 
             // Line Chart
             Text(
-                text = "4. Donitsidiagrammi",
+                text = "3. Aaltodiagrammi",
+                fontSize = 20.sp,
+                color = Color.Green,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .clickable { navController.navigate(route = Screen.WaveChart.route) }
+            )
+
+            // Pie Chart
+            Text(
+                text = "4. Piirakkadiagrammi",
+                fontSize = 20.sp,
+                color = Color.Green,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .clickable { navController.navigate(route = Screen.PieChart.route) }
+            )
+
+            // Line Chart
+            Text(
+                text = "5. Donitsidiagrammi",
                 fontSize = 20.sp,
                 color = Color.Green,
                 modifier = Modifier
@@ -71,39 +81,9 @@ fun HomeScreen(navController: NavController) {
                     .clickable { navController.navigate(route = Screen.DonutChart.route) }
             )
 
-            // Scatter Plot
-            Text(
-                text = "5. Hajakuvaaja",
-                fontSize = 20.sp,
-                color = Color.Red,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .clickable { navController.navigate(route = Screen.ScatterPlot.route) }
-            )
-
-            // Scatter Plot With Images
-            Text(
-                text = "6. Hajakuvaaja kuvilla",
-                fontSize = 20.sp,
-                color = Color.Red,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .clickable { navController.navigate(route = Screen.ScatterPlotImages.route) }
-            )
-
-            // Stem And Leaf Plot
-            Text(
-                text = "7. Stem and leaf -kuva",
-                fontSize = 20.sp,
-                color = Color.Red,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .clickable { navController.navigate(route = Screen.StemAndLeafPlot.route) }
-            )
-
             // Bubble Chart
             Text(
-                text = "8. Bubble Chart",
+                text = "6. Bubble Chart",
                 fontSize = 20.sp,
                 color = Color.Green,
                 modifier = Modifier
@@ -111,14 +91,34 @@ fun HomeScreen(navController: NavController) {
                     .clickable { navController.navigate(route = Screen.BubbleChart.route) }
             )
 
+            // Line Chart
+            Text(
+                text = "7. Yhdistetty diagrammi",
+                fontSize = 20.sp,
+                color = Color.Green,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .clickable { navController.navigate(route = Screen.CombinedChart.route) }
+            )
+
             // Custom Component 1
             Text(
-                text = "9. Custom UI Component 1",
+                text = "8. Datankäyttö esimerkki",
                 fontSize = 20.sp,
                 color = Color.Green,
                 modifier = Modifier
                     .padding(10.dp)
                     .clickable { navController.navigate(route = Screen.CustomUIComponent1.route) }
+            )
+
+            // Scatter Plot With Images
+            Text(
+                text = "9. Painon seuranta sovellus",
+                fontSize = 20.sp,
+                color = Color.Red,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .clickable { navController.navigate(route = Screen.WeightTrackerScreen.route) }
             )
         }
     }

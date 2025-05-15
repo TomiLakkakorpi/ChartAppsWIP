@@ -52,7 +52,6 @@ fun CustomUIComponent1(navController: NavController) {
                 CustomUIComponent1(
                     indicatorValue = value,
                     maxIndicatorValue = 100
-
                 )
 
                 TextField(
@@ -91,6 +90,7 @@ fun CustomUIComponent1(
     canvasSize: Dp = 300.dp,
     indicatorValue: Int = 0,
     maxIndicatorValue: Int = 100,
+    minIndicatorValue: Int = 0,
     backgroundIndicatorColor: Color = Color.LightGray,
     backgroundIndicatorStrokeWidth: Float = 100f,
     foregroundIndicatorColor: Color = Color.DarkGray,
@@ -106,11 +106,17 @@ fun CustomUIComponent1(
     var allowedIndicatorValue by remember {
         mutableStateOf(maxIndicatorValue)
     }
-    allowedIndicatorValue = if (indicatorValue <= maxIndicatorValue) {
-        indicatorValue
-    } else {
+
+    //Tarkistetaan onko syötetty arvo sallituissa rajoissa
+    //Jos syötetty arvo on yli sallitun, asetetaan arvoksi annettu maksimiarvo
+    //Jos syötetty arvo on alle sallitun, asetetaan arvoksi minimiarvo
+    allowedIndicatorValue = (if (indicatorValue >= maxIndicatorValue) {
         maxIndicatorValue
-    }
+    } else if (indicatorValue <= minIndicatorValue) {
+        minIndicatorValue
+    } else {
+        indicatorValue
+    })
 
     var animatedIndicatorValue by remember { mutableStateOf(0f) }
     LaunchedEffect(key1 = allowedIndicatorValue) {
