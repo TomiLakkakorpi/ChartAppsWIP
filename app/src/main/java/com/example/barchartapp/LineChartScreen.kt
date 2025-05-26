@@ -45,7 +45,6 @@ import co.yml.charts.common.extensions.formatToSinglePrecision
 
 var lineChartListIndex = 0F
 var lineChartList = mutableListOf<Point>()
-var doesLineChartListHaveData = false
 
 @Composable
 fun LineChartScreen(navController: NavController) {
@@ -133,10 +132,6 @@ fun LineChartScreen(navController: NavController) {
                         lineChartList.add(Point(lineChartListIndex, text.toFloat(), ""))
                         text = ""
                         lineChartListIndex++
-
-                        if(doesLineChartListHaveData == false) {
-                            doesLineChartListHaveData = true
-                        }
                     } else {
                         Toast.makeText(context, "Syötä arvo!", Toast.LENGTH_SHORT).show()
                     }
@@ -147,14 +142,13 @@ fun LineChartScreen(navController: NavController) {
 
             Button(
                 onClick = {
-                    if (doesLineChartListHaveData == true) {
+                    if (lineChartList.isNotEmpty()) {
 
                         while(lineChartList.isNotEmpty()) {
                             lineChartList.removeAt(lineChartList.size -1)
                         }
 
                         lineChartListIndex = 0f
-                        doesLineChartListHaveData = false
 
                         text = " "
                         text = ""
