@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.text.style.TextAlign
@@ -27,25 +28,14 @@ fun WaveChartScreen(navController: NavController) {
     ) {
         Column() {
             Box() {
-
-
-                Text(
-                    modifier = Modifier
-                        .padding(20.dp)
-                        .clickable {
-                            navController.navigateUp()
-                        },
-                    textAlign = TextAlign.Center,
-                    text = "Takaisin päävalikkoon",
-                    fontSize = MaterialTheme.typography.titleMedium.fontSize
-                )
+                Button(
+                    onClick = {
+                        navController.navigateUp()
+                    }
+                ) {
+                    Text("Takaisin päävalikkoon")
+                }
             }
         }
     }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun WaveChartScreenPreview() {
-    WaveChartScreen(navController = rememberNavController())
 }

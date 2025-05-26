@@ -1,12 +1,14 @@
 package com.example.barchartapp
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +35,11 @@ fun BubbleChartScreen(navController: NavController) {
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column() {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
             Box() {
                 val pointsData: List<Point> =
                     listOf(
@@ -82,16 +88,13 @@ fun BubbleChartScreen(navController: NavController) {
                 )
             }
 
-            Text(
-                modifier = Modifier
-                    .padding(20.dp)
-                    .clickable {
-                        navController.navigateUp()
-                    },
-                textAlign = TextAlign.Center,
-                text = "Takaisin päävalikkoon",
-                fontSize = MaterialTheme.typography.titleMedium.fontSize
-            )
+            Button(
+                onClick = {
+                    navController.navigateUp()
+                }
+            ) {
+                Text("Takaisin päävalikkoon")
+            }
         }
     }
 }

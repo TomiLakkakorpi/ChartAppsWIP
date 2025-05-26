@@ -1,11 +1,13 @@
 package com.example.barchartapp
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,7 +34,11 @@ fun BarChartScreen(navController: NavController) {
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column() {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
             Box() {
                 val maxRange = 700000F
                 val yStepSize = 7
@@ -131,24 +137,15 @@ fun BarChartScreen(navController: NavController) {
                 BarChart(modifier = Modifier.height(350.dp), barChartData = barChartData)
             }
 
-            Text(
-                modifier = Modifier
-                    .padding(20.dp)
-                    .clickable {
-                        navController.navigateUp()
-                    },
-                textAlign = TextAlign.Center,
-                text = "Takaisin päävalikkoon",
-                fontSize = MaterialTheme.typography.titleMedium.fontSize
-            )
+            Button(
+                onClick = {
+                    navController.navigateUp()
+                }
+            ) {
+                Text("Takaisin päävalikkoon")
+            }
         }
     }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun BarChartScreenPreview() {
-    BarChartScreen(navController = rememberNavController())
 }
 
 /* Bar Chart with random values

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -68,21 +69,15 @@ fun CustomUIComponent1(navController: NavController) {
                     )
                 )
 
-            Text(
-                modifier = Modifier.clickable {
+            Button(
+                onClick = {
                     navController.navigateUp()
-                },
-                text = "Takaisin päävalikkoon",
-                fontSize = MaterialTheme.typography.titleMedium.fontSize
-            )
+                }
+            ) {
+                Text("Takaisin päävalikkoon")
+            }
         }
     }
-}
-
-@Composable
-@Preview
-fun PreviewCustomComponent1() {
-    CustomUIComponent1()
 }
 
 @Composable

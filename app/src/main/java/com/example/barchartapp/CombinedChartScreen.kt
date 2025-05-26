@@ -1,6 +1,7 @@
 package com.example.barchartapp
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
@@ -11,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.graphics.Color
@@ -43,7 +45,11 @@ fun CombinedChartScreen(navController: NavController) {
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column() {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
             Box() {
                 val maxRange = 100
                 val yStepSize = 10
@@ -150,26 +156,14 @@ fun CombinedChartScreen(navController: NavController) {
                     )
                 }
             }
-        }
 
-
-        Text(
-            modifier = Modifier
-                .padding(20.dp)
-                .clickable {
+            Button(
+                onClick = {
                     navController.navigateUp()
-                },
-            textAlign = TextAlign.Center,
-            text = "Takaisin päävalikkoon",
-            fontSize = MaterialTheme.typography.titleMedium.fontSize
-        )
-
-
+                }
+            ) {
+                Text("Takaisin päävalikkoon")
+            }
+        }
     }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun CombinedChartScreenPreview() {
-    CombinedChartScreen(navController = rememberNavController())
 }

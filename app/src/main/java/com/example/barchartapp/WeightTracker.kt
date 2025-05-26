@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -172,15 +173,13 @@ fun WeightTrackerScreen(navController: NavController) {
                 )
             )
 
-            Text(
-                modifier = Modifier
-                    .padding(20.dp)
-                    .clickable {
-                        navController.navigateUp()
-                    },
-                text = "Takaisin päävalikkoon",
-                fontSize = 20.sp
-            )
+            Button(
+                onClick = {
+                    navController.navigateUp()
+                }
+            ) {
+                Text("Takaisin päävalikkoon")
+            }
         }
     }
 }

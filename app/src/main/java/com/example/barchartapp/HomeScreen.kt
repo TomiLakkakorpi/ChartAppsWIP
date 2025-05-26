@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,101 +32,85 @@ fun HomeScreen(navController: NavController) {
                 modifier = Modifier.padding(10.dp)
             )
 
-            // Bar Chart
-            Text(
-                text = "1. Pylväsdiagrammi",
-                fontSize = 20.sp,
-                color = Color.Green,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .clickable { navController.navigate(route = Screen.BarChart.route) }
-            )
+            Button(
+                modifier = Modifier.padding(10.dp),
+                onClick = {
+                    navController.navigate(route = Screen.BarChart.route)
+                }
+            ) {
+                Text("1. Pylväsdiagrammi")
+            }
 
-            // Line Chart
-            Text(
-                text = "2. Viivadiagrammi",
-                fontSize = 20.sp,
-                color = Color.Green,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .clickable { navController.navigate(route = Screen.LineChart.route) }
-            )
+            Button(
+                modifier = Modifier.padding(10.dp),
+                onClick = {
+                    navController.navigate(route = Screen.LineChart.route)
+                }
+            ) {
+                Text("2. Viivadiagrammi")
+            }
 
-            // Line Chart
-            Text(
-                text = "3. Aaltodiagrammi",
-                fontSize = 20.sp,
-                color = Color.Green,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .clickable { navController.navigate(route = Screen.WaveChart.route) }
-            )
+            Button(
+                modifier = Modifier.padding(10.dp),
+                onClick = {
+                    navController.navigate(route = Screen.WaveChart.route)
+                }
+            ) {
+                Text("3. Aaltodiagrammi")
+            }
 
-            // Pie Chart
-            Text(
-                text = "4. Piirakkadiagrammi",
-                fontSize = 20.sp,
-                color = Color.Green,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .clickable { navController.navigate(route = Screen.PieChart.route) }
-            )
+            Button(
+                modifier = Modifier.padding(10.dp),
+                onClick = {
+                    navController.navigate(route = Screen.PieChart.route)
+                }
+            ) {
+                Text("4. Piirakkadiagrammi")
+            }
 
-            // Line Chart
-            Text(
-                text = "5. Donitsidiagrammi",
-                fontSize = 20.sp,
-                color = Color.Green,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .clickable { navController.navigate(route = Screen.DonutChart.route) }
-            )
+            Button(
+                modifier = Modifier.padding(10.dp),
+                onClick = {
+                    navController.navigate(route = Screen.DonutChart.route)
+                }
+            ) {
+                Text("5. Donitsidiagrammi")
+            }
 
-            // Bubble Chart
-            Text(
-                text = "6. Bubble Chart",
-                fontSize = 20.sp,
-                color = Color.Green,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .clickable { navController.navigate(route = Screen.BubbleChart.route) }
-            )
+            Button(
+                modifier = Modifier.padding(10.dp),
+                onClick = {
+                    navController.navigate(route = Screen.BubbleChart.route)
+                }
+            ) {
+                Text("6. Bubble Chart")
+            }
 
-            // Line Chart
-            Text(
-                text = "7. Yhdistetty diagrammi",
-                fontSize = 20.sp,
-                color = Color.Green,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .clickable { navController.navigate(route = Screen.CombinedChart.route) }
-            )
+            Button(
+                modifier = Modifier.padding(10.dp),
+                onClick = {
+                    navController.navigate(route = Screen.CombinedChart.route)
+                }
+            ) {
+                Text("7. Yhdistetty diagrammi")
+            }
 
-            // Custom Component 1
-            Text(
-                text = "8. Datankäyttö esimerkki",
-                fontSize = 20.sp,
-                color = Color.Green,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .clickable { navController.navigate(route = Screen.CustomUIComponent1.route) }
-            )
+            Button(
+                modifier = Modifier.padding(10.dp),
+                onClick = {
+                    navController.navigate(route = Screen.CustomUIComponent1.route)
+                }
+            ) {
+                Text("8. Datankäyttö esimerkki")
+            }
 
-            // Scatter Plot With Images
-            Text(
-                text = "9. Painon seuranta sovellus",
-                fontSize = 20.sp,
-                color = Color.Red,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .clickable { navController.navigate(route = Screen.WeightTrackerScreen.route) }
-            )
+            Button(
+                onClick = {
+                    navController.navigate(route = Screen.WeightTrackerScreen.route)
+                }
+            ) {
+                Text("9. Painon seuranta sovellus")
+            }
         }
     }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun HomeScreenPreview() {
-    HomeScreen(navController = rememberNavController())
 }
