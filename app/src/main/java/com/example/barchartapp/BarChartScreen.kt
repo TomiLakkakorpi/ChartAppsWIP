@@ -1,193 +1,134 @@
 package com.example.barchartapp
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import co.yml.charts.axis.AxisData
 import co.yml.charts.common.model.Point
 import co.yml.charts.ui.barchart.BarChart
 import co.yml.charts.ui.barchart.models.BarChartData
 import co.yml.charts.ui.barchart.models.BarData
 import co.yml.charts.ui.barchart.models.BarStyle
+import com.example.barchartapp.ui.theme.color1
+import com.example.barchartapp.ui.theme.color2
+import com.example.barchartapp.ui.theme.color3
+import com.example.barchartapp.ui.theme.color4
+import com.example.barchartapp.ui.theme.color5
+import com.example.barchartapp.ui.theme.color6
 
 @Composable
 fun BarChartScreen(navController: NavController) {
     Box(
         modifier = Modifier
-            .height(800.dp)
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
+            .fillMaxSize()
+            .padding(20.dp)
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box() {
-                val maxRange = 700000F
-                val yStepSize = 7
-
-                val list = arrayListOf(
-                    BarData(
-                        point = Point(1F, 681802F),
-                        Color.Cyan,
-                        label = "Helsinki",
-                    ),
-
-                    BarData(
-                        point = Point(2F, 318507F),
-                        Color.Cyan,
-                        label = "Espoo",
-                    ),
-
-                    BarData(
-                        point = Point(3F, 258770F),
-                        Color.Cyan,
-                        label = "Tampere",
-                    ),
-
-                    BarData(
-                        point = Point(4F, 250073F),
-                        Color.Cyan,
-                        label = "Vantaa",
-                    ),
-
-                    BarData(
-                        point = Point(5F, 215530F),
-                        Color.Cyan,
-                        label = "Oulu",
-                    ),
-
-                    BarData(
-                        point = Point(6F, 204618F),
-                        Color.Cyan,
-                        label = "Turku",
-                    ),
-
-                    /* BarData(
-                        point = Point(7F, 148622F),
-                        Color.Cyan,
-                        label = "Jyväskylä",
-                        ),
-
-                    BarData(
-                        point = Point(8F, 124825F),
-                        Color.Cyan,
-                        label = "Kuopio",
-                        ),
-
-                    BarData(
-                        point = Point(9F, 121202F),
-                        Color.Cyan,
-                        label = "Lahti",
-                        ),
-
-                    BarData(
-                        point = Point(10F, 83334F),
-                        Color.Cyan,
-                        label = "Pori",
-                        ), */
-                )
-
-                val xAxisData = AxisData.Builder()
-                    .axisStepSize(30.dp)
-                    .steps(list.size - 1)
-                    .bottomPadding(40.dp)
-                    .axisLabelAngle(20f)
-                    .startDrawPadding(25.dp)
-                    //.startPadding(10.dp)
-                    .labelData { index -> list[index].label }
-                    .build()
-
-                val yAxisData = AxisData.Builder()
-                    .steps(yStepSize)
-                    .labelAndAxisLinePadding(20.dp)
-                    .axisOffset(10.dp)
-                    .labelData { index -> (index * (maxRange / yStepSize)).toString() }
-                    .build()
-
-                val barChartData = BarChartData(
-                    chartData = list,
-                    xAxisData = xAxisData,
-                    yAxisData = yAxisData,
-                    barStyle = BarStyle(
-                        paddingBetweenBars = 25.dp,
-                        barWidth = 20.dp
-                    ),
-                    showYAxis = true,
-                    showXAxis = true,
-                    horizontalExtraSpace = 50.dp
-                )
-                BarChart(modifier = Modifier.height(350.dp), barChartData = barChartData)
-            }
-
-            Button(
-                onClick = {
-                    navController.navigateUp()
-                }
+            Box(
+                modifier = Modifier.padding(10.dp),
+                contentAlignment = Alignment.Center
             ) {
-                Text("Takaisin päävalikkoon")
+                Button(
+                    onClick = {
+                        navController.navigateUp()
+                    }
+                ) {
+                    Text("Takaisin päävalikkoon")
+                }
             }
+
+            Text(
+                modifier = Modifier.padding(10.dp, 20.dp, 10.dp, 0.dp),
+                textAlign = TextAlign.Center,
+                text = "OAMK hakijamäärät kevät 2023 - syksy 2025",
+                fontSize = 15.sp
+            )
+
+            //Kutsutaan funktiota, joka piirtää pylväskaavion
+            DrawBarChart()
         }
     }
 }
 
-/* Bar Chart with random values
+//Luodaan funktio, jossa konfiguroidaan pylväskaavio
 @Composable
-fun BarChartRandomValues() {
-    val maxRange = 100
-    val barData = DataUtils.getGradientBarChartData(50, 100)
-    val yStepSize = 10
+fun DrawBarChart() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        //Luodaan dynaaminen lista datalle
+        //Esimerkkidatana OAMK hakijamäärä Kevät 2023 - Syksy 2025 (Data opetushallinnon tilastopalvelusta)
+        val dataList = arrayListOf(
+            BarData(point = Point(1F, 3135F), color = color1, label = "K 2023"),
+            BarData(point = Point(2F, 11388F), color = color2, label = "S 2023"),
+            BarData(point = Point(3F, 5307F), color = color3, label = "K 2024"),
+            BarData(point = Point(4F, 12528F), color = color4, label = "S 2024"),
+            BarData(point = Point(5F, 3198F), color = color5, label = "K 2025"),
+            BarData(point = Point(6F, 10956F), color = color6, label = "S 2025"),
+        )
 
-    val xAxisData = AxisData.Builder()
-        .axisStepSize(30.dp)
-        .steps(barData.size - 1)
-        .bottomPadding(40.dp)
-        .topPadding(20.dp)
-        .axisLabelAngle(20f)
-        .startDrawPadding(48.dp)
-        .labelData { index -> barData[index].label }
-        .build()
+        //Asetetaan Y-akselin maksimiarvo
+        val maxRange = 13000
 
-    val yAxisData = AxisData.Builder()
-        .steps(yStepSize)
-        .labelAndAxisLinePadding(20.dp)
-        .axisOffset(20.dp)
-        .labelData { index -> (index * (maxRange / yStepSize)).toString() }
-        .build()
+        //Maksimiarvon voi myös asettaa listan suurimman arvon mukaan
+        //val maxRange = list.maxOf{it.point.y}
 
-    val barChartData = BarChartData(
-        chartData = barData,
-        xAxisData = xAxisData,
-        yAxisData = yAxisData,
-        barStyle = BarStyle(paddingBetweenBars = 20.dp,
-            barWidth = 35.dp,
-            //isGradientEnabled = true,
-            selectionHighlightData = SelectionHighlightData(
-                highlightBarColor = Color.Black,
-                highlightTextBackgroundColor = Color.Green,
-                popUpLabel = { _, y -> " Value : $y " }
-            )),
-        showYAxis = true,
-        showXAxis = true,
-        horizontalExtraSpace = 20.dp
-    )
-    BarChart(modifier = Modifier.height(400.dp), barChartData = barChartData)
+        //Määritetään montako "askelta" haluamme y-akselille.
+        val yStepSize = 13
+
+        // Luodaan xAxisData arvo jossa konfiguroidaan x akselin parametreja.
+        val xAxisData = AxisData.Builder()
+            .axisStepSize(30.dp)
+            .steps(dataList.size - 1)
+            .bottomPadding(60.dp)
+            .axisLabelAngle(45f)
+            .labelAndAxisLinePadding(10.dp)
+            .startDrawPadding(20.dp)
+            .labelData { index -> dataList[index].label }
+            .build()
+
+        //Luodaan yAxisData arvo jossa konfiguroidaan y akselin parametreja.
+        val yAxisData = AxisData.Builder()
+            .steps(yStepSize)
+            .labelAndAxisLinePadding(20.dp)
+            .axisOffset(10.dp)
+            .labelData { index -> (index * (maxRange / yStepSize)).toString() }
+            .build()
+
+        //Luodaan arvo, johon lisätään datalistamme sekä x- ja y-akselien konfiguraatiot
+        val barChartData = BarChartData(
+            chartData = dataList,
+            xAxisData = xAxisData,
+            yAxisData = yAxisData,
+            barStyle = BarStyle(
+                paddingBetweenBars = 25.dp,
+                barWidth = 20.dp
+            ),
+            showYAxis = true,
+            showXAxis = true,
+            horizontalExtraSpace = 50.dp
+        )
+
+        //Kutsutaan YCharts funktiota joka piirtää pylväskaavion
+        //Annetaan funktiolle lisäämämme data sekä x- ja y-akselien konfiguraatiot
+        BarChart(
+            modifier = Modifier
+                .height(350.dp),
+            barChartData = barChartData
+        )
+    }
 }
- */

@@ -41,7 +41,9 @@ fun CustomUIComponent1(navController: NavController) {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column () {
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
                 var value by remember {mutableStateOf(0)}
 
                 /* Text(

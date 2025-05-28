@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.barchartapp.ui.theme.color1
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -33,83 +34,91 @@ fun HomeScreen(navController: NavController) {
             )
 
             Button(
-                modifier = Modifier.padding(10.dp),
                 onClick = {
                     navController.navigate(route = Screen.BarChart.route)
                 }
             ) {
-                Text("1. Pylväsdiagrammi")
+                Text("BarChartAppV1")
             }
 
             Button(
-                modifier = Modifier.padding(10.dp),
                 onClick = {
                     navController.navigate(route = Screen.LineChart.route)
                 }
             ) {
-                Text("2. Viivadiagrammi")
+                Text("LineChartAppV1")
             }
 
             Button(
-                modifier = Modifier.padding(10.dp),
                 onClick = {
                     navController.navigate(route = Screen.WaveChart.route)
                 }
             ) {
-                Text("3. Aaltodiagrammi")
+                Text("WaveChartAppV1")
             }
 
             Button(
-                modifier = Modifier.padding(10.dp),
                 onClick = {
                     navController.navigate(route = Screen.PieChart.route)
                 }
             ) {
-                Text("4. Piirakkadiagrammi")
+                Text("PieChartAppV1")
             }
 
             Button(
-                modifier = Modifier.padding(10.dp),
+                onClick = {
+                    navController.navigate(route = Screen.PieChart2.route)
+                }
+            ) {
+                Text("PieChartAppV2")
+            }
+
+            Button(
+                onClick = {
+                    navController.navigate(route = Screen.PieChart3.route)
+                }
+            ) {
+                Text("PieChartAppV3")
+            }
+
+            Button(
                 onClick = {
                     navController.navigate(route = Screen.DonutChart.route)
                 }
             ) {
-                Text("5. Donitsidiagrammi")
+                Text("DonutChartAppV1")
             }
 
             Button(
-                modifier = Modifier.padding(10.dp),
                 onClick = {
                     navController.navigate(route = Screen.BubbleChart.route)
                 }
             ) {
-                Text("6. Bubble Chart")
+                Text("BubbleChartAppV1")
             }
 
             Button(
-                modifier = Modifier.padding(10.dp),
                 onClick = {
                     navController.navigate(route = Screen.CombinedChart.route)
                 }
             ) {
-                Text("7. Yhdistetty diagrammi")
+                Text("CombinedChartAppV1")
             }
 
             Button(
-                modifier = Modifier.padding(10.dp),
                 onClick = {
                     navController.navigate(route = Screen.CustomUIComponent1.route)
                 }
             ) {
-                Text("8. Datankäyttö esimerkki")
+                Text("CustomUIComponent1")
             }
 
             Button(
                 onClick = {
-                    navController.navigate(route = Screen.WeightTrackerScreen.route)
+                    navController.navigate(route = Screen.UserInputExample1.route)
                 }
             ) {
-                Text("9. Painon seuranta sovellus")
+                Text("UserInputExample1")
             }
         }
     }

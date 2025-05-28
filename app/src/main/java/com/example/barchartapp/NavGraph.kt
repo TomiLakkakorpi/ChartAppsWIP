@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.barchartapp.Screen.UserInputExample1
 
 @Composable
 fun SetupNavGraph(
@@ -38,9 +39,23 @@ fun SetupNavGraph(
             WaveChartScreen(navController)
         }
 
-        // Pie Chart
+        // Pie Chart 1
         composable(
             route = Screen.PieChart.route
+        ) {
+            PieChartScreen(navController)
+        }
+
+        // Pie Chart 2
+        composable(
+            route = Screen.PieChart2.route
+        ) {
+            PieChartScreen(navController)
+        }
+
+        // Pie Chart 3
+        composable(
+            route = Screen.PieChart3.route
         ) {
             PieChartScreen(navController)
         }
@@ -75,9 +90,9 @@ fun SetupNavGraph(
 
         // Weight tracker example
         composable(
-            route = Screen.WeightTrackerScreen.route
+            route = Screen.UserInputExample1.route
         ) {
-            WeightTrackerScreen(navController)
+            UserInputExample1(navController)
         }
     }
 }

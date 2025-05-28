@@ -28,6 +28,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import co.yml.charts.axis.AxisData
 import co.yml.charts.common.model.Point
@@ -48,125 +49,130 @@ var lineChartList = mutableListOf<Point>()
 
 @Composable
 fun LineChartScreen(navController: NavController) {
-    val context = LocalContext.current
-
-    var text by remember {
-        mutableStateOf("")
-    }
-
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp),
         contentAlignment = Alignment.Center
     ) {
-        Column (
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val steps = lineChartList.size
-
-            val xAxisData = AxisData.Builder()
-                .axisStepSize(35.dp)
-                .topPadding(105.dp)
-                .steps(lineChartList.size - 1)
-                .labelData { i -> lineChartList[i].x.toInt().toString() }
-                .labelAndAxisLinePadding(15.dp)
-                .build()
-
-            val yAxisData = AxisData.Builder()
-                .steps(steps)
-                .labelAndAxisLinePadding(20.dp)
-                .labelData { i ->
-                    val yMin = lineChartList.minOf { it.y }
-                    val yMax = lineChartList.maxOf { it.y }
-                    val yScale = (yMax - yMin) / steps
-                    ((i * yScale) + yMin).formatToSinglePrecision()
-                }.build()
-
-            val data = LineChartData(
-                linePlotData = LinePlotData(
-                    lines = listOf(
-                        Line(
-                            dataPoints = lineChartList,
-                            LineStyle(),
-                            IntersectionPoint(),
-                            SelectionHighlightPoint(),
-                            ShadowUnderLine(),
-                            SelectionHighlightPopUp()
-                        )
-                    )
-                ),
-                xAxisData = xAxisData,
-                yAxisData = yAxisData,
-                gridLines = GridLines()
+            Text(
+                modifier = Modifier
+                    .padding(10.dp, 20.dp, 10.dp, 0.dp),
+                textAlign = TextAlign.Center,
+                text = "Nokian osake Tammikuu 2024 - Joulukuu 2024",
+                fontSize = 15.sp
             )
+            //Kutsutaan funktiota, joka piirtää viivakaavion
+            DrawLineChart()
 
             Box(
-                modifier = Modifier
-                    .width(370.dp)
-                    .height(300.dp)
+                modifier = Modifier.padding(10.dp),
+                contentAlignment = Alignment.Center
             ) {
-                if(lineChartList.isNotEmpty()){
-                    LineChart(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(300.dp),
-                        lineChartData = data
-                    )
-                }
-            }
-
-            TextField(
-                value = text,
-                onValueChange = { newText ->
-                    text = newText
-                },
-                label = {
-                    Text(text = "Syötä arvo")
-                },
-            )
-
-            Button(
-                onClick = {
-                    if(text.isNotEmpty()){
-                        lineChartList.add(Point(lineChartListIndex, text.toFloat(), ""))
-                        text = ""
-                        lineChartListIndex++
-                    } else {
-                        Toast.makeText(context, "Syötä arvo!", Toast.LENGTH_SHORT).show()
+                Button(
+                    onClick = {
+                        navController.navigateUp()
                     }
+                ) {
+                    Text("Takaisin päävalikkoon")
                 }
-            ) {
-                Text("Lisää arvo kaavioon")
-            }
-
-            Button(
-                onClick = {
-                    if (lineChartList.isNotEmpty()) {
-
-                        while(lineChartList.isNotEmpty()) {
-                            lineChartList.removeAt(lineChartList.size -1)
-                        }
-
-                        lineChartListIndex = 0f
-
-                        text = " "
-                        text = ""
-                    } else {
-                        Toast.makeText(context, "Taulukko on jo tyhjä!", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            ) {
-                Text("Tyhjennä taulukko")
-            }
-
-            Button(
-                onClick = {
-                    navController.navigateUp()
-                }
-            ) {
-                Text("Takaisin päävalikkoon")
             }
         }
     }
+}
+
+//Luodaan funktio, jossa konfiguroidaan viivakaavio
+@Composable
+fun DrawLineChart() {
+
+    //Luodaan dynaaminen lista, johon lisätään halutut arvot
+    //Esimerkissä käytetään datana Nokian osakkeen arvoa Tammikuu 2024 - Joulukuu 2024 välillä.
+    val dataList = arrayListOf(
+        Point(1f, 3.332f),
+        Point(2f, 3.260f),
+        Point(3f, 3.291f),
+        Point(4f, 3.412f),
+        Point(5f, 3.591f),
+        Point(6f, 3.558f),
+        Point(7f, 3.621f),
+        Point(8f, 3.978f),
+        Point(9f, 3.924f),
+        Point(10f, 4.325f),
+        Point(11f, 3.980f),
+        Point(12f, 4.274f)
+    )
+
+    val monthList = arrayListOf(
+        "Tammi",
+        "Helmi",
+        "Maalis",
+        "Huhti",
+        "Touko",
+        "Kesä",
+        "Heinä",
+        "Elo",
+        "Syys",
+        "Loka",
+        "Marras",
+        "Joulu",
+        ""
+    )
+
+    //Asetetaan montako "askelta" haluamme taulukolle y akselille
+    val yAxisSteps = 10
+
+    //Luodaan xAxisData arvo jossa konfiguroidaan x akselille eri parametreja.
+    val xAxisData = AxisData.Builder()
+        .axisStepSize(50.dp)
+        .topPadding(105.dp)
+        .steps(dataList.size - 1)
+        .axisLabelFontSize(15.sp)
+        //.labelData { i -> "." + dataList[i].x.toInt().toString() }
+        .labelData { i -> monthList[i].toString() }
+        .labelAndAxisLinePadding(25.dp)
+        .build()
+
+    //Luodaan yAxisData arvo jossa konfiguroidaan y akselille eri parametreja.
+    val yAxisData = AxisData.Builder()
+        .steps(yAxisSteps)
+        .labelAndAxisLinePadding(30.dp)
+        .labelData { i ->
+            val yMin =
+                dataList.minOf { it.y }       //Asetetaan taulukon minimiarvoksi listan pienin arvo
+            val yMax =
+                dataList.maxOf { it.y }       //Asetetaan taulukon maksimiarvoksi listan suurin arvo
+            val yScale = (yMax - yMin) / yAxisSteps
+            ((i * yScale) + yMin).formatToSinglePrecision() + " €"
+        }.build()
+
+    //Luodaan arvo johon lisätään datalistamme sekä x ja y akselien konfiguraatiot
+    val data = LineChartData(
+        linePlotData = LinePlotData(
+            lines = listOf(
+                Line(
+                    dataPoints = dataList,
+                    LineStyle(),
+                    IntersectionPoint(),
+                    SelectionHighlightPoint(),
+                    ShadowUnderLine(),
+                    SelectionHighlightPopUp()
+                )
+            )
+        ),
+        xAxisData = xAxisData,
+        yAxisData = yAxisData,
+        gridLines = GridLines()
+    )
+
+    //Kutsutaan YCharts funktiota joka piirtää diagrammin
+    //Annetaan funktiolle lisäämämme data sekä x- ja y-akselien konfiguraatiot
+    LineChart(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp),
+        lineChartData = data
+    )
 }
