@@ -5,11 +5,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,19 +40,6 @@ fun BarChartScreen(navController: NavController) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(
-                modifier = Modifier.padding(10.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Button(
-                    onClick = {
-                        navController.navigateUp()
-                    }
-                ) {
-                    Text("Takaisin päävalikkoon")
-                }
-            }
-
             Text(
                 modifier = Modifier.padding(10.dp, 20.dp, 10.dp, 0.dp),
                 textAlign = TextAlign.Center,
@@ -57,13 +47,13 @@ fun BarChartScreen(navController: NavController) {
                 fontSize = 15.sp
             )
 
-            DrawBarChart()
+            DrawBarChart(navController)
         }
     }
 }
 
 @Composable
-fun DrawBarChart() {
+fun DrawBarChart(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -110,10 +100,32 @@ fun DrawBarChart() {
             horizontalExtraSpace = 50.dp
         )
 
-        BarChart(
-            modifier = Modifier
-                .height(350.dp),
-            barChartData = barChartData
-        )
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            BarChart(
+                modifier = Modifier
+                    .height(350.dp),
+                barChartData = barChartData
+            )
+
+            Box(
+                modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp),
+                //contentAlignment = Alignment.Center
+            ) {
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
+                        navController.navigateUp()
+                    }
+                ) {
+                    Text("Takaisin päävalikkoon")
+                }
+            }
+        }
     }
 }

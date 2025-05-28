@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -71,6 +73,11 @@ fun CustomUIComponent1(navController: NavController) {
                 )
 
             Button(
+                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black
+                ),
                 onClick = {
                     navController.navigateUp()
                 }

@@ -1,8 +1,6 @@
 package com.example.barchartapp
 
 import android.util.Log
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
@@ -13,8 +11,11 @@ import androidx.navigation.NavController
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
+import androidx.compose.ui.graphics.Color
 import co.yml.charts.axis.AxisData
 import co.yml.charts.common.components.Legends
 import co.yml.charts.common.model.LegendLabel
@@ -34,8 +35,8 @@ import co.yml.charts.ui.linechart.model.SelectionHighlightPoint
 import co.yml.charts.ui.linechart.model.SelectionHighlightPopUp
 
 import com.example.barchartapp.ui.theme.color1
-import com.example.barchartapp.ui.theme.color2
-import com.example.barchartapp.ui.theme.color9
+import com.example.barchartapp.ui.theme.color3
+import com.example.barchartapp.ui.theme.color8
 
 @Composable
 fun CombinedChartScreen(navController: NavController) {
@@ -45,11 +46,23 @@ fun CombinedChartScreen(navController: NavController) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(
+                modifier = Modifier.padding(10.dp, 50.dp, 10.dp, 10.dp),
+                text = "Lämpötila ja sademäärä ennuste 23.5. - 1.6.2025"
+            )
+
+            DrawCombinedChart()
+
             Box(
                 modifier = Modifier.padding(10.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
                     onClick = {
                         navController.navigateUp()
                     }
@@ -57,12 +70,6 @@ fun CombinedChartScreen(navController: NavController) {
                     Text("Takaisin päävalikkoon")
                 }
             }
-
-            Text(
-                modifier = Modifier.padding(10.dp, 50.dp, 10.dp, 10.dp),
-                text = "Lämpötila ja sademäärä ennuste 23.5. - 1.6.2025"
-            )
-            DrawCombinedChart()
         }
     }
 }
@@ -170,7 +177,7 @@ fun DrawCombinedChart() {
         lines = listOf(
             Line(
                 dataPoints = lineData,
-                lineStyle = LineStyle(color = color9),
+                lineStyle = LineStyle(color = color8),
                 intersectionPoint = IntersectionPoint(),
                 selectionHighlightPoint = SelectionHighlightPoint(),
                 selectionHighlightPopUp = SelectionHighlightPopUp()
@@ -181,22 +188,22 @@ fun DrawCombinedChart() {
     val legendsConfig = LegendsConfig(
         legendLabelList = arrayListOf(
             LegendLabel(
-                color = color1,
+                color = color3,
                 name = "Alin lämpötila °C"
             ),
             LegendLabel(
-                color = color2,
+                color = color1,
                 name = "Ylin lämpötila °C"
             ),
             LegendLabel(
-                color = color9,
+                color = color8,
                 name = "Sademäärä mm"
             )
         ),
         gridColumnCount = 2
     )
 
-    val colorPaletteList = listOf(color1, color2,)
+    val colorPaletteList = listOf(color3, color1,)
 
     val barPlotData = BarPlotData(
         groupBarList = groupBarData,

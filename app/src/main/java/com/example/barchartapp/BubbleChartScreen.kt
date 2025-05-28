@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -58,26 +60,13 @@ fun BubbleChartScreen(navController: NavController) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(
-                modifier = Modifier.padding(10.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Button(
-                    onClick = {
-                        navController.navigateUp()
-                    }
-                ) {
-                    Text("Takaisin päävalikkoon")
-                }
-            }
-
             Text(
                 modifier = Modifier.padding(10.dp, 10.dp, 10.dp, 0.dp),
                 textAlign = TextAlign.Left,
                 text = "Liiga runkosarja 2024 \n X-akseli: Kolmen pisteen voitot \n Y-akseli: runkosarjan pisteet \n  Kuplan koko: Joukkueen budjetti kaudelle",
                 fontSize = 16.sp
             )
-            DrawBubbleChart()
+            DrawBubbleChart(navController)
 
             Row() {
                 Column(
@@ -106,13 +95,31 @@ fun BubbleChartScreen(navController: NavController) {
                     drawInfoRow(color16, "Jukurit")
                 }
             }
+
+            Box(
+                modifier = Modifier.padding(10.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
+                        navController.navigateUp()
+                    }
+                ) {
+                    Text("Takaisin päävalikkoon")
+                }
+            }
         }
     }
 }
 
 
 @Composable
-fun DrawBubbleChart() {
+fun DrawBubbleChart(navController: NavController) {
     val dataList = arrayListOf(
         Bubble( //Lukko
             center = Point(32F, 112F),
@@ -284,7 +291,6 @@ fun DrawBubbleChart() {
             .fillMaxWidth()
             .padding(10.dp)
             .height(400.dp),
-
         bubbleChartData = data
     )
 }

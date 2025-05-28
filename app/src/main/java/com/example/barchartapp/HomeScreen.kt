@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,13 +30,19 @@ fun HomeScreen(navController: NavController) {
 
             // Header
             Text(
-                text = "Diagrammit",
+                text = "Kotlin Kaaviot",
                 fontSize = 25.sp,
                 modifier = Modifier.padding(10.dp)
             )
 
             Button(
+                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black
+                ),
                 onClick = {
+
                     navController.navigate(route = Screen.BarChart.route)
                 }
             ) {
@@ -42,6 +50,11 @@ fun HomeScreen(navController: NavController) {
             }
 
             Button(
+                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black
+                ),
                 onClick = {
                     navController.navigate(route = Screen.LineChart.route)
                 }
@@ -50,6 +63,11 @@ fun HomeScreen(navController: NavController) {
             }
 
             Button(
+                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black
+                ),
                 onClick = {
                     navController.navigate(route = Screen.WaveChart.route)
                 }
@@ -58,6 +76,11 @@ fun HomeScreen(navController: NavController) {
             }
 
             Button(
+                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black
+                ),
                 onClick = {
                     navController.navigate(route = Screen.PieChart.route)
                 }
@@ -66,6 +89,11 @@ fun HomeScreen(navController: NavController) {
             }
 
             Button(
+                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black
+                ),
                 onClick = {
                     navController.navigate(route = Screen.PieChart2.route)
                 }
@@ -74,6 +102,11 @@ fun HomeScreen(navController: NavController) {
             }
 
             Button(
+                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black
+                ),
                 onClick = {
                     navController.navigate(route = Screen.PieChart3.route)
                 }
@@ -82,6 +115,11 @@ fun HomeScreen(navController: NavController) {
             }
 
             Button(
+                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black
+                ),
                 onClick = {
                     navController.navigate(route = Screen.DonutChart.route)
                 }
@@ -90,6 +128,11 @@ fun HomeScreen(navController: NavController) {
             }
 
             Button(
+                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black
+                ),
                 onClick = {
                     navController.navigate(route = Screen.BubbleChart.route)
                 }
@@ -98,6 +141,11 @@ fun HomeScreen(navController: NavController) {
             }
 
             Button(
+                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black
+                ),
                 onClick = {
                     navController.navigate(route = Screen.CombinedChart.route)
                 }
@@ -106,6 +154,11 @@ fun HomeScreen(navController: NavController) {
             }
 
             Button(
+                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black
+                ),
                 onClick = {
                     navController.navigate(route = Screen.CustomUIComponent1.route)
                 }
@@ -114,6 +167,11 @@ fun HomeScreen(navController: NavController) {
             }
 
             Button(
+                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black
+                ),
                 onClick = {
                     navController.navigate(route = Screen.UserInputExample1.route)
                 }
