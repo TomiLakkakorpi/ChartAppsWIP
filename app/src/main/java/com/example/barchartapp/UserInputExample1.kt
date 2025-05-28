@@ -123,9 +123,13 @@ fun UserInputExample1(navController: NavController) {
                     Button(
                         onClick = {
                             if(text.isNotEmpty()){
-                                lineChartList.add(Point(lineChartListIndex, text.toFloat(), ""))
-                                text = ""
-                                lineChartListIndex++
+                                if(checkIfValidValue(text)) {
+                                    lineChartList.add(Point(lineChartListIndex, text.toFloat(), ""))
+                                    text = ""
+                                    lineChartListIndex++
+                                } else {
+                                    Toast.makeText(context, "Syöttämäsi arvoa ei voida hyväksyä! Syötä arvo muodossa 1.1", Toast.LENGTH_SHORT).show()
+                                }
                             } else {
                                 Toast.makeText(context, "Syötä arvo!", Toast.LENGTH_SHORT).show()
                             }
@@ -137,7 +141,6 @@ fun UserInputExample1(navController: NavController) {
                     Button(
                         onClick = {
                             if (lineChartList.isNotEmpty()) {
-
                                 while(lineChartList.isNotEmpty()) {
                                     lineChartList.removeAt(lineChartList.size -1)
                                 }
@@ -165,4 +168,9 @@ fun UserInputExample1(navController: NavController) {
             }
         }
     }
+}
+
+fun checkIfValidValue(input: String): Boolean {
+    val regex = Regex("[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)")
+    return input.matches(regex)
 }

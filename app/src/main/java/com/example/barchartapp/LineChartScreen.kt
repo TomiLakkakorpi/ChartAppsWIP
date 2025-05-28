@@ -1,10 +1,5 @@
 package com.example.barchartapp
 
-import android.R.attr.onClick
-import android.util.Log
-import android.widget.Toast
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
@@ -12,22 +7,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.compose.runtime.*
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import co.yml.charts.axis.AxisData
@@ -65,7 +50,7 @@ fun LineChartScreen(navController: NavController) {
                 text = "Nokian osake Tammikuu 2024 - Joulukuu 2024",
                 fontSize = 15.sp
             )
-            //Kutsutaan funktiota, joka piirtää viivakaavion
+
             DrawLineChart()
 
             Box(
@@ -84,12 +69,8 @@ fun LineChartScreen(navController: NavController) {
     }
 }
 
-//Luodaan funktio, jossa konfiguroidaan viivakaavio
 @Composable
 fun DrawLineChart() {
-
-    //Luodaan dynaaminen lista, johon lisätään halutut arvot
-    //Esimerkissä käytetään datana Nokian osakkeen arvoa Tammikuu 2024 - Joulukuu 2024 välillä.
     val dataList = arrayListOf(
         Point(1f, 3.332f),
         Point(2f, 3.260f),
@@ -121,34 +102,29 @@ fun DrawLineChart() {
         ""
     )
 
-    //Asetetaan montako "askelta" haluamme taulukolle y akselille
     val yAxisSteps = 10
 
-    //Luodaan xAxisData arvo jossa konfiguroidaan x akselille eri parametreja.
     val xAxisData = AxisData.Builder()
         .axisStepSize(50.dp)
         .topPadding(105.dp)
         .steps(dataList.size - 1)
         .axisLabelFontSize(15.sp)
-        //.labelData { i -> "." + dataList[i].x.toInt().toString() }
         .labelData { i -> monthList[i].toString() }
         .labelAndAxisLinePadding(25.dp)
         .build()
 
-    //Luodaan yAxisData arvo jossa konfiguroidaan y akselille eri parametreja.
     val yAxisData = AxisData.Builder()
         .steps(yAxisSteps)
         .labelAndAxisLinePadding(30.dp)
         .labelData { i ->
             val yMin =
-                dataList.minOf { it.y }       //Asetetaan taulukon minimiarvoksi listan pienin arvo
+                dataList.minOf { it.y }
             val yMax =
-                dataList.maxOf { it.y }       //Asetetaan taulukon maksimiarvoksi listan suurin arvo
+                dataList.maxOf { it.y }
             val yScale = (yMax - yMin) / yAxisSteps
             ((i * yScale) + yMin).formatToSinglePrecision() + " €"
         }.build()
 
-    //Luodaan arvo johon lisätään datalistamme sekä x ja y akselien konfiguraatiot
     val data = LineChartData(
         linePlotData = LinePlotData(
             lines = listOf(
@@ -167,8 +143,6 @@ fun DrawLineChart() {
         gridLines = GridLines()
     )
 
-    //Kutsutaan YCharts funktiota joka piirtää diagrammin
-    //Annetaan funktiolle lisäämämme data sekä x- ja y-akselien konfiguraatiot
     LineChart(
         modifier = Modifier
             .fillMaxWidth()

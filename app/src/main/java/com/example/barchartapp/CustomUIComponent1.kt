@@ -28,7 +28,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -46,11 +45,11 @@ fun CustomUIComponent1(navController: NavController) {
         ) {
                 var value by remember {mutableStateOf(0)}
 
-                /* Text(
+                Text(
                     textAlign = TextAlign.Center,
                     text = "Datan käyttö",
                     fontSize = 25.sp
-                ) */
+                )
 
                 CustomUIComponent1(
                     indicatorValue = value,
@@ -92,7 +91,6 @@ fun CustomUIComponent1(
     backgroundIndicatorStrokeWidth: Float = 100f,
     foregroundIndicatorColor: Color = Color.DarkGray,
     foregroundIndicatorStrokeWidth: Float = 100f,
-    //indicatorStrokeCap: StrokeCap = StrokeCap.Round,
     bigTextFontSize: TextUnit = 40.sp,
     bigTextColor: Color = Color.Black,
     bigTextSuffix: String = "GB",
@@ -104,9 +102,6 @@ fun CustomUIComponent1(
         mutableStateOf(maxIndicatorValue)
     }
 
-    //Tarkistetaan onko syötetty arvo sallituissa rajoissa
-    //Jos syötetty arvo on yli sallitun, asetetaan arvoksi annettu maksimiarvo
-    //Jos syötetty arvo on alle sallitun, asetetaan arvoksi minimiarvo
     allowedIndicatorValue = (if (indicatorValue >= maxIndicatorValue) {
         maxIndicatorValue
     } else if (indicatorValue <= minIndicatorValue) {
@@ -150,14 +145,12 @@ fun CustomUIComponent1(
                     componentSize = componentSize,
                     indicatorColor = backgroundIndicatorColor,
                     indicatorStrokeWidth = backgroundIndicatorStrokeWidth,
-//                    indicatorStokeCap = indicatorStrokeCap
                 )
                 foregroundIndicator(
                     sweepAngle = sweepAngle,
                     componentSize = componentSize,
                     indicatorColor = foregroundIndicatorColor,
                     indicatorStrokeWidth = foregroundIndicatorStrokeWidth,
-//                    indicatorStokeCap = indicatorStrokeCap
                 )
             },
         verticalArrangement = Arrangement.Center,
@@ -179,7 +172,6 @@ fun DrawScope.backgroundIndicator(
     componentSize: Size,
     indicatorColor: Color,
     indicatorStrokeWidth: Float,
-//    indicatorStokeCap: StrokeCap
 ) {
     drawArc(
         size = componentSize,
@@ -203,7 +195,6 @@ fun DrawScope.foregroundIndicator(
     componentSize: Size,
     indicatorColor: Color,
     indicatorStrokeWidth: Float,
-//    indicatorStokeCap: StrokeCap
 ) {
     drawArc(
         size = componentSize,

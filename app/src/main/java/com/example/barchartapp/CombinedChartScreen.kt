@@ -14,18 +14,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
 import co.yml.charts.axis.AxisData
 import co.yml.charts.common.components.Legends
 import co.yml.charts.common.model.LegendLabel
 import co.yml.charts.common.model.LegendsConfig
 import co.yml.charts.common.model.Point
-import co.yml.charts.common.utils.DataUtils
 import co.yml.charts.ui.barchart.models.BarData
 import co.yml.charts.ui.barchart.models.BarPlotData
 import co.yml.charts.ui.barchart.models.BarStyle
@@ -79,7 +73,6 @@ fun DrawCombinedChart() {
     val maxRange = 20
     val yStepSize = 10
 
-    // Data 10pv sääennuste Oulu Pe 23.5. - Su 1.6.
     val lineData = arrayListOf(
         Point(0f, 1.9f),
         Point(1f, 1.7f),
@@ -162,7 +155,6 @@ fun DrawCombinedChart() {
     val xAxisData = AxisData.Builder()
         .axisStepSize(20.dp)
         .bottomPadding(5.dp)
-        //.labelData { index -> index.toString() }
         .labelData { index -> dateList[index].toString() }
         .build()
 

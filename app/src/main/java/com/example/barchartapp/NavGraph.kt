@@ -50,14 +50,14 @@ fun SetupNavGraph(
         composable(
             route = Screen.PieChart2.route
         ) {
-            PieChartScreen(navController)
+            PieChartScreen2(navController)
         }
 
         // Pie Chart 3
         composable(
             route = Screen.PieChart3.route
         ) {
-            PieChartScreen(navController)
+            PieChartScreen3(navController)
         }
 
         // Donut Chart

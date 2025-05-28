@@ -1,8 +1,6 @@
 package com.example.barchartapp
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +24,6 @@ import androidx.navigation.NavController
 import co.yml.charts.common.model.Point
 import co.yml.charts.axis.AxisData
 import co.yml.charts.common.extensions.formatToSinglePrecision
-import co.yml.charts.common.utils.DataUtils
 import co.yml.charts.ui.bubblechart.model.BubbleChartData
 import co.yml.charts.ui.linechart.model.GridLines
 import co.yml.charts.ui.bubblechart.BubbleChart
@@ -114,16 +110,14 @@ fun BubbleChartScreen(navController: NavController) {
     }
 }
 
-//Luodaan funktio, jossa määritellään ja rakennetaan pylväsdiagrammi
+
 @Composable
 fun DrawBubbleChart() {
-    //Luodaan "dataList" arvo, johon asetetaan lista esimerkkidataa.
-    //Oikeassa käyttötapauksessa data ei olisi kovakoodattu.
     val dataList = arrayListOf(
         Bubble( //Lukko
-            center = Point(32F, 112F),                                          //"center" määrittelee kuplan paikan koordinaatistossa x ja y -arvojen avulla.
-            density = 29.50F,                                                   //"density" määrittelee kuplan koon.
-            bubbleStyle = BubbleStyle(solidColor = color1),                     //Määritellään kuplan väri
+            center = Point(32F, 112F),
+            density = 29.50F,
+            bubbleStyle = BubbleStyle(solidColor = color1),
             selectionHighlightPoint = SelectionHighlightPoint(Color.Black),
             selectionHighlightPopUp = SelectionHighlightPopUp(Color.Cyan)
         ),
@@ -246,17 +240,15 @@ fun DrawBubbleChart() {
             selectionHighlightPopUp = SelectionHighlightPopUp(Color.Cyan)
         ),
 
-        //Lisätään tyhjä kupla koordinaatteihin 0,0. Ilman tätä kaavio käyttäytyi oudosti.
+        //Empty bubble to prevent weird issues from happening
         Bubble(
             center = Point(0F, 0F),
             density = 0F)
     )
 
-    //Luodaan "steps" arvot, jolla määritellään x- ja y- akselien askeleiden määrä
     val yAxisSteps = 12
     val xAxisSteps = 10
 
-    //Luodaan xAxisData arvo, jossa konfiguroidaan x-akselille parametreja.
     val xAxisData = AxisData.Builder()
         .axisStepSize(9.dp)
         .steps(xAxisSteps)
@@ -269,7 +261,6 @@ fun DrawBubbleChart() {
         .startDrawPadding(10.dp)
         .build()
 
-    //Luodaan yAxisData arvo, jossa konfiguroidaan y-akselille parametreja.
     val yAxisData = AxisData.Builder()
         .steps(yAxisSteps)
         .labelAndAxisLinePadding(20.dp)
@@ -280,7 +271,6 @@ fun DrawBubbleChart() {
             ((i*yScale) + yMin).formatToSinglePrecision() + " P"
         }.build()
 
-    //Luodaan data-arvo, johon lisätään datalista sekä x- ja y- akseleiden konfiguraatiot
     val data = BubbleChartData(
         bubbles = dataList,
         isZoomAllowed = true,
@@ -289,14 +279,12 @@ fun DrawBubbleChart() {
         gridLines = GridLines()
     )
 
-    // Kutsutaan YCharts funktiota kaavion piirtämiseen
     BubbleChart(
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
             .height(400.dp),
 
-        //Määritellään diagrammin dataksi yllä luomamme data-arvo, joka sisältää diagrammin datan ja akseleiden konfiguraatiot
         bubbleChartData = data
     )
 }

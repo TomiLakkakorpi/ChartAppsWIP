@@ -1,8 +1,6 @@
 package com.example.barchartapp
 
 import android.graphics.Typeface
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,14 +31,10 @@ import com.example.barchartapp.ui.theme.color2
 import com.example.barchartapp.ui.theme.color3
 import com.example.barchartapp.ui.theme.color4
 import com.example.barchartapp.ui.theme.color5
-import com.example.barchartapp.ui.theme.color6
 import com.example.barchartapp.ui.theme.color7
 import com.example.barchartapp.ui.theme.color8
 import com.example.barchartapp.ui.theme.color9
 import com.example.barchartapp.ui.theme.color10
-import com.example.barchartapp.ui.theme.color11
-import com.example.barchartapp.ui.theme.color12
-import com.example.barchartapp.ui.theme.color13
 import com.example.barchartapp.ui.theme.color15
 import com.example.barchartapp.ui.theme.color16
 
@@ -62,7 +55,6 @@ fun DonutChartScreen(navController: NavController) {
                 fontSize = 20.sp
             )
 
-            //Kutsutaan funktiota, joka piirtää donitsikaavion
             DrawDonutChart()
 
             Box(
@@ -83,10 +75,8 @@ fun DonutChartScreen(navController: NavController) {
 
 @Composable
 fun DrawDonutChart() {
-    //Luodaan dynaaminen lista, johon asetetaan arvoksi lista suomen kaupunkeja, niiden väkiluvut sekä siivulle haluttu väri.
     val dataList = PieChartData(
         slices = listOf(
-            //Lisätään kaavioon siivut, lisätään siivuille otsikko, arvo ja väri
             PieChartData.Slice("Helsinki", 684018f, color = color1),
             PieChartData.Slice("Espoo", 320931f, color = color2),
             PieChartData.Slice("Tampere", 260180f, color = color3),
@@ -97,15 +87,11 @@ fun DrawDonutChart() {
             PieChartData.Slice("Kuopio", 125666f, color = color9),
             PieChartData.Slice("Lahti", 121337f, color = color10),
             PieChartData.Slice("Pori", 83305f, color = color15),
-
-            //Lisätään donitsikaavioon uusi siivu, johon lisätään muun suomen väkiluku
             PieChartData.Slice("Muu Suomi", 3129089f, color = color16)
         ),
-        //Määritellään minkälaisen kaavion haluamme
         plotType = PlotType.Donut
     )
 
-    // Luodaan konfigurointi arvo, jossa määritellään kaaviolle eri parametreja
     val donutChartConfig = PieChartConfig(
         labelVisible = true,
         strokeWidth = 120f,
@@ -118,17 +104,9 @@ fun DrawDonutChart() {
         labelFontSize = 42.sp,
     )
 
-    // Luodaan sarake, jonka korkeudeksi määritetään 500dp
     Column(modifier = Modifier.height(500.dp)) {
-
-        //Luodaan sarakkeiden väliin 20dp rako
         Spacer(modifier = Modifier.height(20.dp))
-
-        //Muodostetaan selitteiden luettelo ruudukkomuotoon
         Legends(legendsConfig = DataUtils.getLegendsConfigFromPieChartData(pieChartData = dataList, 3))
-
-        //Kutsutaan funktiota joka piirtää kaavion
-        //Annetaan funktiolle luomamme data ja konfiguroinnit
         DonutPieChart(
             modifier = Modifier
                 .fillMaxWidth()
