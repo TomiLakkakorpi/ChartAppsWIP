@@ -13,4 +13,6 @@ sealed class Screen(val route: String) {
     object CombinedChart: Screen(route = "combinedchart_screen")
     object CustomUIComponent1: Screen(route = "customuicomponent1_screen")
     object UserInputExample1: Screen(route = "userinputexample1_screen")
+    object UserInputExample2: Screen(route = "userinputexample2_screen")
+    object TestScreen: Screen(route = "test_screen")
 }

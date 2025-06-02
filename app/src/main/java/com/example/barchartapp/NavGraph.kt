@@ -88,11 +88,24 @@ fun SetupNavGraph(
             CustomUIComponent1(navController)
         }
 
-        // Weight tracker example
+        //
         composable(
             route = Screen.UserInputExample1.route
         ) {
             UserInputExample1(navController)
+        }
+
+        //
+        composable(
+            route = Screen.UserInputExample2.route
+        ) {
+            UserInputExample2(navController)
+        }
+
+        composable(
+            route = Screen.TestScreen.route
+        ) {
+            TestScreen(navController)
         }
     }
 }

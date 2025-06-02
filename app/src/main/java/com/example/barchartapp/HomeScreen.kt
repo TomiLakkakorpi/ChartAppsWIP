@@ -178,6 +178,32 @@ fun HomeScreen(navController: NavController) {
             ) {
                 Text("UserInputExample1")
             }
+
+            Button(
+                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black
+                ),
+                onClick = {
+                    navController.navigate(route = Screen.UserInputExample2.route)
+                }
+            ) {
+                Text("UserInputExample2")
+            }
+
+            Button(
+                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black
+                ),
+                onClick = {
+                    navController.navigate(route = Screen.TestScreen.route)
+                }
+            ) {
+                Text("Test Screen")
+            }
         }
     }
 }

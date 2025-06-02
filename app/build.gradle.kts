@@ -42,6 +42,8 @@ android {
 dependencies {
     implementation(libs.ycharts)
 
+    implementation("org.mariuszgromada.math:MathParser.org-mXparser:6.1.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
