@@ -176,7 +176,7 @@ fun HomeScreen(navController: NavController) {
                     navController.navigate(route = Screen.UserInputExample1.route)
                 }
             ) {
-                Text("UserInputExample1")
+                Text("User value input")
             }
 
             Button(
@@ -186,10 +186,10 @@ fun HomeScreen(navController: NavController) {
                     contentColor = Color.Black
                 ),
                 onClick = {
-                    navController.navigate(route = Screen.UserInputExample2.route)
+                    navController.navigate(route = Screen.GraphingCalculatorScreen1.route)
                 }
             ) {
-                Text("UserInputExample2")
+                Text("Graphing Calculator V1")
             }
 
             Button(
@@ -199,10 +199,49 @@ fun HomeScreen(navController: NavController) {
                     contentColor = Color.Black
                 ),
                 onClick = {
-                    navController.navigate(route = Screen.TestScreen.route)
+                    navController.navigate(route = Screen.GraphingCalculatorScreen2.route)
                 }
             ) {
-                Text("Test Screen")
+                Text("Graphing Calculator V2")
+            }
+
+            Button(
+                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black
+                ),
+                onClick = {
+                    navController.navigate(route = Screen.GraphingCalculatorScreen3.route)
+                }
+            ) {
+                Text("Graphing Calculator V3")
+            }
+
+            Button(
+                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black
+                ),
+                onClick = {
+                    navController.navigate(route = Screen.GraphingCalculatorScreen4.route)
+                }
+            ) {
+                Text("Graphing Calculator V4")
+            }
+
+            Button(
+                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Green,
+                    contentColor = Color.Black
+                ),
+                onClick = {
+                    navController.navigate(route = Screen.GraphingCalculatorScreen5.route)
+                }
+            ) {
+                Text("Graphing Calculator V5")
             }
         }
     }
