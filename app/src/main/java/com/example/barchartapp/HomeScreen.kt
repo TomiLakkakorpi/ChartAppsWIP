@@ -3,8 +3,10 @@ package com.example.barchartapp
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -26,222 +28,347 @@ fun HomeScreen(navController: NavController) {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column () {
+        Row() {
+            Column() {
+                // Header
+                Text(
+                    text = "Kaaviot ja kuvaajat",
+                    fontSize = 20.sp,
+                    modifier = Modifier.padding(5.dp)
+                )
 
-            // Header
-            Text(
-                text = "Kotlin Kaaviot",
-                fontSize = 25.sp,
-                modifier = Modifier.padding(10.dp)
-            )
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
 
-            Button(
-                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green,
-                    contentColor = Color.Black
-                ),
-                onClick = {
-
-                    navController.navigate(route = Screen.BarChart.route)
+                        navController.navigate(route = Screen.BarChart.route)
+                    }
+                ) {
+                    Text(
+                        fontSize = 13.sp,
+                        text = "BarChartAppV1"
+                    )
                 }
-            ) {
-                Text("BarChartAppV1")
+
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
+                        navController.navigate(route = Screen.LineChart.route)
+                    }
+                ) {
+                    Text(
+                        fontSize = 13.sp,
+                        text = "LineChartAppV1"
+                    )
+                }
+
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
+                        navController.navigate(route = Screen.WaveChart.route)
+                    }
+                ) {
+                    Text(
+                        fontSize = 13.sp,
+                        text = "WaveChartAppV1"
+                    )
+                }
+
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
+                        navController.navigate(route = Screen.PieChart.route)
+                    }
+                ) {
+                    Text(
+                        fontSize = 13.sp,
+                        text = "PieChartAppV1"
+                    )
+                }
+
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
+                        navController.navigate(route = Screen.PieChart2.route)
+                    }
+                ) {
+                    Text(
+                        fontSize = 13.sp,
+                        text = "PieChartAppV2"
+                    )
+                }
+
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
+                        navController.navigate(route = Screen.PieChart3.route)
+                    }
+                ) {
+                    Text(
+                        fontSize = 13.sp,
+                        text = "PieChartAppV3"
+                    )
+                }
+
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
+                        navController.navigate(route = Screen.DonutChart.route)
+                    }
+                ) {
+                    Text(
+                        fontSize = 13.sp,
+                        text = "DonutChartAppV1"
+                    )
+                }
+
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
+                        navController.navigate(route = Screen.BubbleChart.route)
+                    }
+                ) {
+                    Text(
+                        fontSize = 13.sp,
+                        text = "BubbleChartAppV1"
+                    )
+                }
+
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
+                        navController.navigate(route = Screen.CombinedChart.route)
+                    }
+                ) {
+                    Text(
+                        fontSize = 13.sp,
+                        text = "CombinedChartAppV1"
+                    )
+                }
+
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
+                        navController.navigate(route = Screen.CustomUIComponent1.route)
+                    }
+                ) {
+                    Text(
+                        fontSize = 13.sp,
+                        text = "CustomUIComponent1"
+                    )
+                }
             }
 
-            Button(
-                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green,
-                    contentColor = Color.Black
-                ),
-                onClick = {
-                    navController.navigate(route = Screen.LineChart.route)
-                }
-            ) {
-                Text("LineChartAppV1")
-            }
+            Column() {
+                // Header
+                Text(
+                    text = "Graafiset laskimet",
+                    fontSize = 20.sp,
+                    modifier = Modifier.padding(5.dp)
+                )
 
-            Button(
-                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green,
-                    contentColor = Color.Black
-                ),
-                onClick = {
-                    navController.navigate(route = Screen.WaveChart.route)
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
+                        navController.navigate(route = Screen.UserInputExample1.route)
+                    }
+                ) {
+                    Text(
+                        fontSize = 13.sp,
+                        text = "User value input"
+                    )
                 }
-            ) {
-                Text("WaveChartAppV1")
-            }
 
-            Button(
-                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green,
-                    contentColor = Color.Black
-                ),
-                onClick = {
-                    navController.navigate(route = Screen.PieChart.route)
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
+                        navController.navigate(route = Screen.GraphingCalculatorScreen1.route)
+                    }
+                ) {
+                    Text(
+                        fontSize = 13.sp,
+                        text = "Graphing Calculator V1"
+                    )
                 }
-            ) {
-                Text("PieChartAppV1")
-            }
 
-            Button(
-                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green,
-                    contentColor = Color.Black
-                ),
-                onClick = {
-                    navController.navigate(route = Screen.PieChart2.route)
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
+                        navController.navigate(route = Screen.GraphingCalculatorScreen2.route)
+                    }
+                ) {
+                    Text(
+                        fontSize = 13.sp,
+                        text = "Graphing Calculator V2"
+                    )
                 }
-            ) {
-                Text("PieChartAppV2")
-            }
 
-            Button(
-                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green,
-                    contentColor = Color.Black
-                ),
-                onClick = {
-                    navController.navigate(route = Screen.PieChart3.route)
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
+                        navController.navigate(route = Screen.GraphingCalculatorScreen3.route)
+                    }
+                ) {
+                    Text(
+                        fontSize = 13.sp,
+                        text = "Graphing Calculator V3"
+                    )
                 }
-            ) {
-                Text("PieChartAppV3")
-            }
 
-            Button(
-                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green,
-                    contentColor = Color.Black
-                ),
-                onClick = {
-                    navController.navigate(route = Screen.DonutChart.route)
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
+                        navController.navigate(route = Screen.GraphingCalculatorScreen4.route)
+                    }
+                ) {
+                    Text(
+                        fontSize = 13.sp,
+                        text = "Graphing Calculator V4"
+                    )
                 }
-            ) {
-                Text("DonutChartAppV1")
-            }
 
-            Button(
-                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green,
-                    contentColor = Color.Black
-                ),
-                onClick = {
-                    navController.navigate(route = Screen.BubbleChart.route)
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
+                        navController.navigate(route = Screen.GraphingCalculatorScreen5.route)
+                    }
+                ) {
+                    Text(
+                        fontSize = 13.sp,
+                        text = "Graphing Calculator V5"
+                    )
                 }
-            ) {
-                Text("BubbleChartAppV1")
-            }
 
-            Button(
-                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green,
-                    contentColor = Color.Black
-                ),
-                onClick = {
-                    navController.navigate(route = Screen.CombinedChart.route)
+                Button(
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                    modifier = Modifier
+                        .width(200.dp)
+                        .padding(5.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green,
+                        contentColor = Color.Black
+                    ),
+                    onClick = {
+                        navController.navigate(route = Screen.GraphingCalculatorUIScreen.route)
+                    }
+                ) {
+                    Text(
+                        fontSize = 13.sp,
+                        text = "Graphing Calculator UI"
+                    )
                 }
-            ) {
-                Text("CombinedChartAppV1")
-            }
-
-            Button(
-                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green,
-                    contentColor = Color.Black
-                ),
-                onClick = {
-                    navController.navigate(route = Screen.CustomUIComponent1.route)
-                }
-            ) {
-                Text("CustomUIComponent1")
-            }
-
-            Button(
-                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green,
-                    contentColor = Color.Black
-                ),
-                onClick = {
-                    navController.navigate(route = Screen.UserInputExample1.route)
-                }
-            ) {
-                Text("User value input")
-            }
-
-            Button(
-                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green,
-                    contentColor = Color.Black
-                ),
-                onClick = {
-                    navController.navigate(route = Screen.GraphingCalculatorScreen1.route)
-                }
-            ) {
-                Text("Graphing Calculator V1")
-            }
-
-            Button(
-                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green,
-                    contentColor = Color.Black
-                ),
-                onClick = {
-                    navController.navigate(route = Screen.GraphingCalculatorScreen2.route)
-                }
-            ) {
-                Text("Graphing Calculator V2")
-            }
-
-            Button(
-                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green,
-                    contentColor = Color.Black
-                ),
-                onClick = {
-                    navController.navigate(route = Screen.GraphingCalculatorScreen3.route)
-                }
-            ) {
-                Text("Graphing Calculator V3")
-            }
-
-            Button(
-                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green,
-                    contentColor = Color.Black
-                ),
-                onClick = {
-                    navController.navigate(route = Screen.GraphingCalculatorScreen4.route)
-                }
-            ) {
-                Text("Graphing Calculator V4")
-            }
-
-            Button(
-                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Green,
-                    contentColor = Color.Black
-                ),
-                onClick = {
-                    navController.navigate(route = Screen.GraphingCalculatorScreen5.route)
-                }
-            ) {
-                Text("Graphing Calculator V5")
             }
         }
     }

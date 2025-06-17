@@ -1,6 +1,5 @@
 package com.example.barchartapp
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +26,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+
+//YCharts Importit
 import co.yml.charts.axis.AxisData
 import co.yml.charts.common.extensions.formatToSinglePrecision
 import co.yml.charts.common.model.Point
@@ -39,6 +40,8 @@ import co.yml.charts.ui.wavechart.WaveChart
 import co.yml.charts.ui.wavechart.model.Wave
 import co.yml.charts.ui.wavechart.model.WaveChartData
 import co.yml.charts.ui.wavechart.model.WavePlotData
+
+//MathParser Importit
 import org.mariuszgromada.math.mxparser.Argument
 import org.mariuszgromada.math.mxparser.Expression
 
@@ -46,19 +49,17 @@ var Calculator2lineChartList = mutableListOf<Point>()
 
 @Composable
 fun GraphingCalculatorScreen2(navController: NavController) {
-
     var text by remember { mutableStateOf("") }
-    var xStart by remember { mutableFloatStateOf(-5.0f) }
-    var xEnd by remember { mutableFloatStateOf(5.0f) }
-    var xIncrement by remember { mutableFloatStateOf(0.1f) }
-    var xValue by remember {mutableFloatStateOf(0.5f)}
-
-
+    var formula by remember {mutableStateOf("")}
     var e: Expression
     var x: Argument
     var y: Argument
-
-    var formula by remember {mutableStateOf("")}
+    var xValue by remember {mutableFloatStateOf(0.5f)}
+    var yValue = 0f
+    var chart1Drawn by remember {mutableStateOf(false)}
+    var xStart by remember { mutableFloatStateOf(-5.0f) }
+    var xEnd by remember { mutableFloatStateOf(5.0f) }
+    var xIncrement by remember { mutableFloatStateOf(0.1f) }
 
     Box(
         modifier = Modifier
@@ -107,7 +108,6 @@ fun GraphingCalculatorScreen2(navController: NavController) {
                             selectionHighlightPoint = SelectionHighlightPoint(),
                             shadowUnderLine = ShadowUnderLine(),
                             selectionHighlightPopUp = SelectionHighlightPopUp()
-                            //waveFillColor = WaveFillColor(topColor = Color.Green, bottomColor = Color.Red),
                         ),
                     )
                 ),
@@ -126,10 +126,7 @@ fun GraphingCalculatorScreen2(navController: NavController) {
                     .width(370.dp)
                     .height(300.dp)
             ) {
-                Log.d("FormulaTest", "Checking if chart can be drawed")
-
                 if(Calculator2lineChartList.isNotEmpty()){
-                    Log.d("FormulaTest", "Drawing Chart")
                     WaveChart(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -146,7 +143,7 @@ fun GraphingCalculatorScreen2(navController: NavController) {
                     text = newText
                 },
                 label = {
-                    Text(text = "Kirjoita kaavio")
+                    Text(text = "Kirjoita kaava")
                 },
             )
 
@@ -154,26 +151,24 @@ fun GraphingCalculatorScreen2(navController: NavController) {
                 Button(
                     modifier = Modifier.padding(0.dp, 0.dp, 20.dp, 0.dp),
                     onClick = {
-                        if(text.isNotEmpty()){
-                            while(xValue <= xEnd) {
-                                x = Argument("x=$xValue")
-                                y = Argument(text, x)
-                                e = Expression("y", y)
-
-                                Calculator2lineChartList.add(Point(xValue, e.calculate().toFloat(), ""))
-
-                                Log.d("FormulaTest", "Point added to list is: x: $xValue, y: " + e.calculate().toString())
-                                Log.d("FormulaTest", "Point added is in position ${Calculator2lineChartList.size}")
-
-                                xValue = floatAddition(xValue, xIncrement)
+                        formula = text
+                        if(formula.isNotEmpty()){
+                            if(!chart1Drawn) {
+                                while(xValue <= xEnd) {
+                                    x = Argument("x=$xValue")
+                                    y = Argument(formula, x)
+                                    e = Expression("y", y)
+                                    yValue = e.calculate().toFloat()
+                                    Calculator2lineChartList.add(Point(xValue, yValue, ""))
+                                    xValue = xValue + xIncrement
+                                }
+                                chart1Drawn = true
+                            } else {
+                                Toast.makeText(context, "Kaava on jo piirretty", Toast.LENGTH_SHORT).show()
                             }
                         } else {
                             Toast.makeText(context, "Syötä kaava!", Toast.LENGTH_SHORT).show()
                         }
-
-                        xValue = xStart
-
-                        formula = text
                         text = " "
                         text = ""
                     }
@@ -187,7 +182,8 @@ fun GraphingCalculatorScreen2(navController: NavController) {
                             while(Calculator2lineChartList.isNotEmpty()) {
                                 Calculator2lineChartList.removeAt(Calculator2lineChartList.size -1)
                             }
-
+                            xValue = xStart
+                            chart1Drawn = false
                             text = " "
                             text = ""
                             formula = ""
@@ -214,7 +210,6 @@ fun GraphingCalculatorScreen2(navController: NavController) {
                             Text(text = "Syötä x Lähtöarvo")
                         },
                     )
-
                     TextField(
                         modifier = Modifier
                             .padding(5.dp)
@@ -241,7 +236,6 @@ fun GraphingCalculatorScreen2(navController: NavController) {
                             Text(text = "Syötä x lisäys")
                         },
                     )
-
                     Button(
                         shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
                         modifier = Modifier.padding(5.dp),
@@ -274,9 +268,4 @@ fun GraphingCalculatorScreen2(navController: NavController) {
             }
         }
     }
-}
-
-private fun floatAddition(numA: Float, numB: Float): Float {
-    var value = numA + numB
-    return value.formatToSinglePrecision().toFloat()
 }

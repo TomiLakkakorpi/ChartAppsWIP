@@ -48,10 +48,17 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import org.mariuszgromada.math.mxparser.Argument
 import org.mariuszgromada.math.mxparser.Expression
+import kotlin.math.abs
 
-var Calculator5lineChartListIndex = 0f
+var Calculator5squareXIndex = 0
+var Calculator5squareYIndex = 0
+
+var Calculator5squareRootXIndex = 0
+var Calculator5squareRootYIndex = 0
+
+var Calc5DistanceIndex = 0
+
 var Calculator5lineChartList = mutableListOf<Point>()
-var squareYIndex = 0
 
 @Composable
 fun GraphingCalculatorScreen5(navController: NavController) {
@@ -60,12 +67,13 @@ fun GraphingCalculatorScreen5(navController: NavController) {
     var xStart by remember { mutableFloatStateOf(-5.0f) }
     var xEnd by remember { mutableFloatStateOf(5.0f) }
     var xIncrement by remember { mutableFloatStateOf(0.1f) }
-    var xValue by remember {mutableFloatStateOf(0.5f)}
-
+    var xValue by remember {mutableFloatStateOf(-5f)}
 
     var e: Expression
     var x: Argument
     var y: Argument
+
+    var distanceValue = 0f
 
     var formula by remember {mutableStateOf("")}
 
@@ -130,6 +138,11 @@ fun GraphingCalculatorScreen5(navController: NavController) {
                 text = "Piirretty Kaava: $formula"
             )
 
+            Text(
+                modifier = Modifier.padding(10.dp),
+                text = "Käyrän pituus: $distanceValue"
+            )
+
             Box(
                 modifier = Modifier
                     .width(370.dp)
@@ -175,7 +188,6 @@ fun GraphingCalculatorScreen5(navController: NavController) {
                                 Log.d("FormulaTest", "Point added to list is: x: $xValue, y: " + e.calculate().toString())
                                 Log.d("FormulaTest", "Point added is in position ${Calculator5lineChartList.size}")
 
-                                Calculator5lineChartListIndex++
                                 xValue = floatAddition(xValue, xIncrement)
                             }
                         } else {
@@ -201,6 +213,9 @@ fun GraphingCalculatorScreen5(navController: NavController) {
                             text = " "
                             text = ""
                             formula = ""
+
+                            Calculator5squareXIndex = 0
+                            Calculator5squareYIndex = 0
                         } else {
                             Toast.makeText(context, "Taulukko on jo tyhjä!", Toast.LENGTH_SHORT).show()
                         }
@@ -213,39 +228,189 @@ fun GraphingCalculatorScreen5(navController: NavController) {
             Row() {
                 Column() {
                     Button(
+                        modifier = Modifier.padding(10.dp, 10.dp, 10.dp, 10.dp),
                         shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Blue,
-                            contentColor = Color.Black
+                            contentColor = Color.White
                         ),
                         onClick = {
-                            while(Calculator5lineChartList.isNotEmpty()) {
-                                Calculator5lineChartList.removeAt(Calculator5lineChartList.size -1)
+                            if(Calculator5lineChartList.isEmpty()) {
+                                Toast.makeText(context, "Lista on tyhjä, syötä ensin kaava!", Toast.LENGTH_SHORT).show()
+                            } else if(Calculator5squareXIndex == Calculator5lineChartList.size) {
+                                Toast.makeText(context, "x arvot on jo kerran muunnettu", Toast.LENGTH_SHORT).show()
+                            } else {
+                                while(Calculator5squareXIndex < Calculator5lineChartList.size) {
+                                    val y = Calculator5lineChartList[Calculator5squareXIndex].y
+                                    val x = floatSquared(Calculator5lineChartList[Calculator5squareXIndex].x)
+                                    Calculator5lineChartList[Calculator5squareXIndex] = Point(x,y)
+                                    Calculator5squareXIndex++
+
+                                    Log.d("modification", "Arvo $Calculator5squareXIndex päivitetty x: $x ja y: $y arvoilla")
+                                }
+
+                                text = " "
+                                text = ""
+                                Calculator5squareRootXIndex = 0
                             }
-
-                            xValue = xStart
-                            Log.d("FormulaTest", formula)
-
-                            while(xValue <= xEnd) {
-                                x = Argument("x=$xValue")
-                                y = Argument(formula, x)
-                                e = Expression("y", y)
-
-                                val yValue = floatSquared(e.calculate().toFloat())
-                                Calculator5lineChartList.add(Point(xValue, yValue, ""))
-
-                                Log.d("FormulaTest", "Point added to list is: x: $xValue, y: $yValue")
-                                Log.d("FormulaTest", "Point added is in position ${Calculator5lineChartList.size}")
-
-                                xValue = floatAddition(xValue, xIncrement)
-                            }
-
-                            xValue = xStart
-                            text = " "
-                            text = ""
                         }
                     ) {
-                        Text("y neliö")
+                        Text("x²")
+                    }
+
+                    Button(
+                        modifier = Modifier.padding(10.dp, 10.dp, 10.dp, 10.dp),
+                        shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            contentColor = Color.White
+                        ),
+                        onClick = {
+                            if(Calculator5lineChartList.isEmpty()) {
+                                Toast.makeText(context, "Lista on tyhjä, syötä ensin kaava!", Toast.LENGTH_SHORT).show()
+                            } else if(Calculator5squareYIndex == Calculator5lineChartList.size){
+                                Toast.makeText(context, "y arvot on jo kerran muunnettu", Toast.LENGTH_SHORT).show()
+                            } else {
+                                while(Calculator5squareYIndex < Calculator5lineChartList.size) {
+                                    val x = Calculator5lineChartList[Calculator5squareYIndex].x
+                                    val y = floatSquared(Calculator5lineChartList[Calculator5squareYIndex].y)
+                                    Calculator5lineChartList[Calculator5squareYIndex] = Point(x,y)
+                                    Calculator5squareYIndex++
+
+                                    Log.d("modification", "Arvo $Calculator5squareYIndex päivitetty x: $x ja y: $y arvoilla")
+                                }
+                                text = " "
+                                text = ""
+                                Calculator5squareRootYIndex = 0
+                            }
+                        }
+                    ) {
+                        Text("y²")
+                    }
+                }
+
+                Column() {
+                    Button(
+                        modifier = Modifier.padding(10.dp, 10.dp, 10.dp, 10.dp),
+                        shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            contentColor = Color.White
+                        ),
+                        onClick = {
+                            if(Calculator5lineChartList.isEmpty()) {
+                                Toast.makeText(context, "Lista on tyhjä, syötä ensin kaava!", Toast.LENGTH_SHORT).show()
+                            } else if(Calculator5squareRootXIndex == Calculator5lineChartList.size) {
+                                Toast.makeText(context, "x arvot on jo kerran muunnettu", Toast.LENGTH_SHORT).show()
+                            } else {
+                                while(Calculator5squareRootXIndex < Calculator5lineChartList.size) {
+                                    val y = Calculator5lineChartList[Calculator5squareRootXIndex].y
+                                    val x = floatSquareRoot(Calculator5lineChartList[Calculator5squareRootXIndex].x)
+                                    Calculator5lineChartList[Calculator5squareRootXIndex] = Point(x,y)
+                                    Calculator5squareRootXIndex++
+
+                                    Log.d("modification", "Arvo $Calculator5squareRootXIndex päivitetty x: $x ja y: $y arvoilla")
+                                }
+
+                                text = " "
+                                text = ""
+                                Calculator5squareXIndex = 0
+                            }
+                        }
+                    ) {
+                        Text("²√x")
+                    }
+
+                    Button(
+                        modifier = Modifier.padding(10.dp, 10.dp, 10.dp, 10.dp),
+                        shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            contentColor = Color.White
+                        ),
+                        onClick = {
+                            if(Calculator5lineChartList.isEmpty()) {
+                                Toast.makeText(context, "Lista on tyhjä, syötä ensin kaava!", Toast.LENGTH_SHORT).show()
+                            } else if(Calculator5squareRootYIndex == Calculator5lineChartList.size) {
+                                Toast.makeText(context, "y arvot on jo kerran muunnettu", Toast.LENGTH_SHORT).show()
+                            } else {
+                                while(Calculator5squareRootYIndex < Calculator5lineChartList.size) {
+                                    val y = Calculator5lineChartList[Calculator5squareRootYIndex].x
+                                    val x = floatSquareRoot(Calculator5lineChartList[Calculator5squareRootYIndex].y)
+                                    Calculator5lineChartList[Calculator5squareRootYIndex] = Point(x,y)
+                                    Calculator5squareRootYIndex++
+
+                                    Log.d("modification", "Arvo $Calculator5squareRootYIndex päivitetty x: $x ja y: $y arvoilla")
+                                }
+
+                                text = " "
+                                text = ""
+                                Calculator5squareYIndex = 0
+                            }
+                        }
+                    ) {
+                        Text("²√y")
+                    }
+                }
+                Column() {
+                    Button(
+                        modifier = Modifier.padding(10.dp, 10.dp, 10.dp, 10.dp),
+                        shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            contentColor = Color.White
+                        ),
+                        onClick = {
+
+                        }
+                    ) {
+                        Text("")
+                    }
+                    Button(
+                        modifier = Modifier.padding(10.dp, 10.dp, 10.dp, 10.dp),
+                        shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            contentColor = Color.White
+                        ),
+                        onClick = {
+
+                        }
+                    ) {
+                        Text("")
+                    }
+                }
+
+                Column() {
+                    Button(
+                        modifier = Modifier.padding(10.dp, 10.dp, 10.dp, 10.dp),
+                        shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            contentColor = Color.White
+                        ),
+                        onClick = {
+                            CoroutineScope(IO).launch {
+                                while(Calc5DistanceIndex <= Calculator5lineChartList.size -2) {
+                                    var x1 = Calculator5lineChartList[Calc5DistanceIndex].x
+                                    var x2 = Calculator5lineChartList[Calc5DistanceIndex+1].x
+                                    var y1 = Calculator5lineChartList[Calc5DistanceIndex].y
+                                    var y2 = Calculator5lineChartList[Calc5DistanceIndex+1].y
+                                    distanceValue = distanceValue + distanceBetweenPoints(x1, y1, x2, y2)
+                                    Log.d("Distance", "Total distance: $distanceValue")
+                                    Calc5DistanceIndex++
+                                }
+
+                                distanceValue.formatToSinglePrecision()
+                            }
+                        }
+                    ) {
+                        Text("Laske käyrän pituus")
+                    }
+                    Button(
+                        modifier = Modifier.padding(10.dp, 10.dp, 10.dp, 10.dp),
+                        shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            contentColor = Color.White
+                        ),
+                        onClick = {
+
+                        }
+                    ) {
+                        Text("")
                     }
                 }
             }
@@ -279,4 +444,42 @@ private fun floatAddition(numA: Float, numB: Float): Float {
 private fun floatSquared(num: Float): Float {
     var value = num*num
     return value.formatToSinglePrecision().toFloat()
+}
+
+private fun floatSquareRoot(num: Float): Float {
+    var value = 0f
+
+    if(num<0) {
+        var absNum = abs(num)
+        var eAbsSquareRoot = Expression("√$absNum")
+        value = eAbsSquareRoot.calculate().toFloat()//.formatToSinglePrecision().toFloat()
+    } else if(num>=0) {
+        var eSquareRoot = Expression("√$num")
+        value = eSquareRoot.calculate().toFloat()//.formatToSinglePrecision().toFloat()
+    }
+
+    return value.toFloat()
+}
+
+private fun distanceBetweenPoints(x1: Float, y1: Float, x2: Float, y2: Float): Float {
+    var xDifference = x2-x1
+    var yDifference = y2-y1
+
+    xDifference = abs(xDifference)
+    yDifference = abs(yDifference)
+
+    var xSquaredExpression = Expression ("√$xDifference")
+    var ySquaredExpression = Expression ("√$yDifference")
+
+    var xSquared = xSquaredExpression.calculate().toFloat()
+    var ySquared = ySquaredExpression.calculate().toFloat()
+
+    var combinedValue = xSquared + ySquared
+
+    return combinedValue
+
+    //var value = 0f
+    //var distanceExpression = Expression("√((($x2)-($x1))^2+(($y2)-($y1))^2)")
+    //value = distanceExpression.calculate().toFloat()
+    //return value
 }

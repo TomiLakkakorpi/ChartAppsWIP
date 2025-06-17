@@ -1,6 +1,5 @@
 package com.example.barchartapp
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +26,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
+
+//YCharts Importit
 import co.yml.charts.axis.AxisData
 import co.yml.charts.common.extensions.formatToSinglePrecision
 import co.yml.charts.common.model.Point
@@ -38,11 +42,21 @@ import co.yml.charts.ui.linechart.model.LinePlotData
 import co.yml.charts.ui.linechart.model.SelectionHighlightPoint
 import co.yml.charts.ui.linechart.model.SelectionHighlightPopUp
 import co.yml.charts.ui.linechart.model.ShadowUnderLine
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
+
+//MathParser Importit
 import org.mariuszgromada.math.mxparser.Argument
 import org.mariuszgromada.math.mxparser.Expression
+
+/** Esimerkki kahden kaavan samanaikaiseen piirtoon, mukautettavalla piirtoalueella ja lisäysarvolla
+ *
+ * Tässä esimerkissä käyttäjä syöttää tekstikenttiin 2 kaavaa.
+ * Molemmat kaavat piirretään päällekkäin, joten molempia voidaan tutkia samanaikaisesti.
+ * Tässäkin esimerkissä käyttäjä voi myös valita piirtoalueen sekä x lisäysarvon.
+ *
+ * Kun y:n arvot on laskettu, kaavat piirretään käyttäen YCharts WaveChart kuvaajaa.
+ * Esimerkissä kaavion piirtoon liittyviä asioita ei ole kommentoitu.
+ * Jos haluat opiskella miten kaavioita toteutetaan, palaa esimerkkiin WaveChartAppV1.
+ */
 
 var Calculator3lineChartList1 = mutableListOf<Point>()
 var Calculator3lineChartList2 = mutableListOf<Point>()
@@ -50,16 +64,17 @@ var Calculator3lineChartList2 = mutableListOf<Point>()
 @Composable
 fun GraphingCalculatorScreen3(navController: NavController) {
 
-    //License.iConfirmNonCommercialUse("")
-
     var text1 by remember { mutableStateOf("") }
     var text2 by remember { mutableStateOf("") }
 
     var xStart by remember { mutableFloatStateOf(-5.0f) }
     var xEnd by remember { mutableFloatStateOf(5.0f) }
     var xIncrement by remember { mutableFloatStateOf(0.1f) }
+
     var xValue1 by remember {mutableFloatStateOf(-5.0f)}
     var xValue2 by remember {mutableFloatStateOf(-5.0f)}
+    var yValue1 = 0f
+    var yValue2 = 0f
 
     var e2: Expression
     var x2: Argument
@@ -72,8 +87,8 @@ fun GraphingCalculatorScreen3(navController: NavController) {
     var formula1 by remember {mutableStateOf("")}
     var formula2 by remember {mutableStateOf("")}
 
-    var chart1Ready by remember {mutableStateOf(false)}
-    var chart2Ready by remember {mutableStateOf(false)}
+    var chart1Drawn by remember {mutableStateOf(false)}
+    var chart2Drawn by remember {mutableStateOf(false)}
 
     Box(
         modifier = Modifier
@@ -91,9 +106,6 @@ fun GraphingCalculatorScreen3(navController: NavController) {
                 steps = Calculator3lineChartList1.size
             }
 
-            //var yMin = 0f
-            //var yMax = 0f
-
             val xAxisData = AxisData.Builder()
                 .axisStepSize(30.dp)
                 //.startDrawPadding(48.dp)
@@ -110,17 +122,6 @@ fun GraphingCalculatorScreen3(navController: NavController) {
                 .steps(steps)
                 .labelAndAxisLinePadding(20.dp)
                 .labelData { i ->
-                    /*if(Calculator3lineChartList1.minOf { it.y } <= Calculator3lineChartList2.minOf { it.y }) {
-                        yMin = Calculator3lineChartList1.minOf { it.y }
-                    } else {
-                        yMin = Calculator3lineChartList2.minOf { it.y }
-                    }
-
-                    if(Calculator3lineChartList1.maxOf { it.y } >= Calculator3lineChartList2.maxOf { it.y }) {
-                        yMax = Calculator3lineChartList1.maxOf { it.y }
-                    } else {
-                        yMax = Calculator3lineChartList2.maxOf { it.y }
-                    } */
                     val yMin = Calculator3lineChartList1.minOf { it.y }
                     val yMax = Calculator3lineChartList1.maxOf { it.y }
                     val yScale = (yMax - yMin) / steps
@@ -161,8 +162,8 @@ fun GraphingCalculatorScreen3(navController: NavController) {
             )
 
             Text(
-                    modifier = Modifier.padding(10.dp),
-            text = "Kaava 2: $formula2"
+                modifier = Modifier.padding(10.dp),
+                text = "Kaava 2: $formula2"
             )
 
             Box(
@@ -170,10 +171,9 @@ fun GraphingCalculatorScreen3(navController: NavController) {
                     .width(370.dp)
                     .height(300.dp)
             ) {
-                Log.d("FormulaTest", "Checking if chart can be drawed")
 
                 if(Calculator3lineChartList1.isNotEmpty() && Calculator3lineChartList2.isNotEmpty()) {
-                    if(chart1Ready && chart2Ready) {
+                    if(chart1Drawn && chart2Drawn) {
                         LineChart(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -186,31 +186,31 @@ fun GraphingCalculatorScreen3(navController: NavController) {
 
             Row() {
 
-                    TextField(
-                        modifier = Modifier
-                            .width(170.dp)
-                            .padding(5.dp),
-                        value = text1,
-                        onValueChange = { newText ->
-                            text1 = newText
-                        },
-                        label = {
-                            Text(text = "Kirjoita kaava 1")
-                        },
-                    )
+                TextField(
+                    modifier = Modifier
+                        .width(170.dp)
+                        .padding(5.dp),
+                    value = text1,
+                    onValueChange = { newText ->
+                        text1 = newText
+                    },
+                    label = {
+                        Text(text = "Kirjoita kaava 1")
+                    },
+                )
 
-                    TextField(
-                        modifier = Modifier
-                            .width(170.dp)
-                            .padding(5.dp),
-                        value = text2,
-                        onValueChange = { newText ->
-                            text2 = newText
-                        },
-                        label = {
-                            Text(text = "Kirjoita kaava 2")
-                        },
-                    )
+                TextField(
+                    modifier = Modifier
+                        .width(170.dp)
+                        .padding(5.dp),
+                    value = text2,
+                    onValueChange = { newText ->
+                        text2 = newText
+                    },
+                    label = {
+                        Text(text = "Kirjoita kaava 2")
+                    },
+                )
 
             }
 
@@ -218,44 +218,41 @@ fun GraphingCalculatorScreen3(navController: NavController) {
                 Button(
                     modifier = Modifier.padding(0.dp, 0.dp, 20.dp, 0.dp),
                     onClick = {
-                        if(text1.isNotEmpty() && text2.isNotEmpty()) {
-                            Toast.makeText(context, "Kaavoja lasketaan, odota hetki!", Toast.LENGTH_SHORT).show()
+                        formula1 = text1
+                        formula2 = text2
 
-                            CoroutineScope(IO).launch {
-                                while(xValue1 <= xEnd) {
-                                    x1 = Argument("x=$xValue1")
-                                    y1 = Argument(text1, x1)
-                                    e1 = Expression("y", y1)
+                        if(formula1.isNotEmpty() && formula2.isNotEmpty()) {
+                            if(!chart1Drawn && !chart2Drawn) {
+                                Toast.makeText(context, "Kaavoja lasketaan, odota hetki!", Toast.LENGTH_SHORT).show()
 
-                                    Calculator3lineChartList1.add(Point(xValue1, e1.calculate().toFloat(), ""))
-
-                                    Log.d("FormulaTest", "Point added to list 1 x: $xValue1, y: " + e1.calculate().toString())
-
-                                    xValue1 = floatAddition(xValue1, xIncrement)
+                                CoroutineScope(IO).launch {
+                                    while(xValue1 <= xEnd) {
+                                        x1 = Argument("x=$xValue1")
+                                        y1 = Argument(formula1, x1)
+                                        e1 = Expression("y", y1)
+                                        yValue1 = e1.calculate().toFloat()
+                                        Calculator3lineChartList1.add(Point(xValue1, yValue1, ""))
+                                        xValue1 = xValue1 + xIncrement
+                                    }
+                                    text1 = ""
+                                    chart1Drawn = true
                                 }
 
-                                text1 = ""
-                            }
-                            Log.d("FormulaTest", "Chart 1 ready")
-                            chart1Ready = true
-
-                            CoroutineScope(IO).launch{
-                                while(xValue2 <= xEnd) {
-                                    x2 = Argument("x=$xValue2")
-                                    y2 = Argument(text2, x2)
-                                    e2 = Expression("y", y2)
-
-                                    Calculator3lineChartList2.add(Point(xValue2, e2.calculate().toFloat(), ""))
-
-                                    Log.d("FormulaTest", "Point added to list 2 x: $xValue2, y: " + e2.calculate().toString())
-
-                                    xValue2 = floatAddition(xValue2, xIncrement)
+                                CoroutineScope(IO).launch{
+                                    while(xValue2 <= xEnd) {
+                                        x2 = Argument("x=$xValue2")
+                                        y2 = Argument(formula2, x2)
+                                        e2 = Expression("y", y2)
+                                        yValue2 = e2.calculate().toFloat()
+                                        Calculator3lineChartList2.add(Point(xValue2, yValue2, ""))
+                                        xValue2 = xValue2 + xIncrement
+                                    }
+                                    text2 = ""
+                                    chart2Drawn = true
                                 }
-                                text2 = ""
+                            } else {
+                                Toast.makeText(context, "Kaavat on jo piirretty!", Toast.LENGTH_SHORT).show()
                             }
-                            chart2Ready = true
-                            Log.d("FormulaTest", "Chart 2 ready")
-
                         } else if(!text1.isNotEmpty() && text2.isNotEmpty()){
                             Toast.makeText(context, "Syötä kaava 1!", Toast.LENGTH_SHORT).show()
                         } else if(text1.isNotEmpty() && !text2.isNotEmpty()) {
@@ -263,15 +260,12 @@ fun GraphingCalculatorScreen3(navController: NavController) {
                         } else {
                             Toast.makeText(context, "Syötä kaavat", Toast.LENGTH_SHORT).show()
                         }
-
-                        xValue1 = xStart
-                        formula1 = text1
-                        formula2 = text2
                     }
                 ) {
                     Text("Piirrä kaavat")
                 }
 
+                //Näppäin listojen tyhjentämiseen
                 Button(
                     onClick = {
                         if(Calculator3lineChartList1.isEmpty() && Calculator3lineChartList2.isEmpty()) {
@@ -281,16 +275,16 @@ fun GraphingCalculatorScreen3(navController: NavController) {
                         while(Calculator3lineChartList1.isNotEmpty()) {
                             Calculator3lineChartList1.removeAt(Calculator3lineChartList1.size -1)
                         }
-                        chart1Ready = false
-                        Log.d("FormulaTest", "Chart 1 cleared")
+
+                        chart1Drawn = false
                         formula1 = ""
                         xValue1 = xStart
 
                         while(Calculator3lineChartList2.isNotEmpty()) {
                             Calculator3lineChartList2.removeAt(Calculator3lineChartList2.size -1)
                         }
-                        chart2Ready = false
-                        Log.d("FormulaTest", "Chart 2 cleared")
+
+                        chart2Drawn = false
                         formula2 = ""
                         xValue2 = xStart
                     }
@@ -374,9 +368,4 @@ fun GraphingCalculatorScreen3(navController: NavController) {
             }
         }
     }
-}
-
-private fun floatAddition(numA: Float, numB: Float): Float {
-    var value = numA + numB
-    return value.formatToSinglePrecision().toFloat()
 }

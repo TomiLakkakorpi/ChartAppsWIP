@@ -126,5 +126,11 @@ fun SetupNavGraph(
         ) {
             GraphingCalculatorScreen5(navController)
         }
+
+        composable(
+            route = Screen.GraphingCalculatorUIScreen.route
+        ) {
+            GraphingCalculatorUIScreen(navController)
+        }
     }
 }
