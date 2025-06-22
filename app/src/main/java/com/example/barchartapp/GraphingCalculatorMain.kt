@@ -21,32 +21,26 @@ import androidx.navigation.NavController
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Switch
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import co.yml.charts.axis.AxisData
 import co.yml.charts.common.extensions.formatToSinglePrecision
-import co.yml.charts.common.model.PlotType
 import co.yml.charts.common.model.Point
 import co.yml.charts.ui.linechart.LineChart
 import co.yml.charts.ui.linechart.model.GridLines
 import co.yml.charts.ui.linechart.model.Line
 import co.yml.charts.ui.linechart.model.LineChartData
 import co.yml.charts.ui.linechart.model.LinePlotData
-import co.yml.charts.ui.linechart.model.LineStyle
 import co.yml.charts.ui.linechart.model.SelectionHighlightPoint
 import co.yml.charts.ui.linechart.model.SelectionHighlightPopUp
 import co.yml.charts.ui.linechart.model.ShadowUnderLine
-import co.yml.charts.ui.wavechart.WaveChart
-import co.yml.charts.ui.wavechart.model.Wave
-import co.yml.charts.ui.wavechart.model.WaveChartData
-import co.yml.charts.ui.wavechart.model.WavePlotData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -70,8 +64,8 @@ var CalcMainDistanceIndex2 = 0
 var CalculatorMainLineChartList1 = mutableListOf<Point>()
 var CalculatorMainLineChartList2 = mutableListOf<Point>()
 
-var CalculatorMainFormula1Calculated = false
-var CalculatorMainFormula2Calculated = false
+var isChart1Altered = true
+var isChart2Altered = true
 
 @Composable
 fun GraphingCalculatorUIScreen(navController: NavController) {
@@ -106,6 +100,11 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
     var distanceLine1 = ""
     var distanceLine2 = ""
 
+    var switchLine = ""
+
+    var alteringChart1 by remember {mutableStateOf(false)}
+    var alteringChart2 by remember {mutableStateOf(false)}
+
     var chart1DistanceCalculated by remember {mutableStateOf(false)}
     var chart2DistanceCalculated by remember {mutableStateOf(false)}
 
@@ -125,9 +124,9 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
 
     val xAxisData = AxisData.Builder()
         .axisStepSize(30.dp)
-        .startDrawPadding(48.dp)
+        //.startDrawPadding(48.dp)
         .steps(CalculatorMainLineChartList1.size - 1)
-        .labelAndAxisLinePadding(25.dp)
+        .labelAndAxisLinePadding(20.dp)
         .labelData { i ->
             val xMin = CalculatorMainLineChartList1.minOf { it.x }
             val xMax = CalculatorMainLineChartList1.maxOf { it.x }
@@ -137,7 +136,7 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
 
     val yAxisData = AxisData.Builder()
         .steps(steps)
-        .labelAndAxisLinePadding(20.dp)
+        .labelAndAxisLinePadding(35.dp)
         .labelData { i ->
             val yMin = CalculatorMainLineChartList1.minOf { it.y }
             val yMax = CalculatorMainLineChartList1.maxOf { it.y }
@@ -147,9 +146,9 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
 
     val xAxisData2 = AxisData.Builder()
         .axisStepSize(30.dp)
-        .startDrawPadding(48.dp)
+        //.startDrawPadding(48.dp)
         .steps(CalculatorMainLineChartList2.size - 1)
-        .labelAndAxisLinePadding(25.dp)
+        .labelAndAxisLinePadding(20.dp)
         .labelData { i ->
             val xMin = CalculatorMainLineChartList2.minOf { it.x }
             val xMax = CalculatorMainLineChartList2.maxOf { it.x }
@@ -159,7 +158,7 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
 
     val yAxisData2 = AxisData.Builder()
         .steps(steps)
-        .labelAndAxisLinePadding(20.dp)
+        .labelAndAxisLinePadding(35.dp)
         .labelData { i ->
             val yMin = CalculatorMainLineChartList2.minOf { it.y }
             val yMax = CalculatorMainLineChartList2.maxOf { it.y }
@@ -302,20 +301,15 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
                             .border(BorderStroke(2.dp, Color.Black))
                     ) {
                         if(CalculatorMainLineChartList1.isNotEmpty() && CalculatorMainLineChartList2.isNotEmpty()){
-                            Log.d("FormulaTest", "Drawing two formulas")
                             LineChart(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(350.dp),
                                 lineChartData = dataTwoCharts
                             )
-                            Log.d("FormulaTest", "List1 length: ${CalculatorMainLineChartList1.size}")
-                            Log.d("FormulaTest", "List2 length: ${CalculatorMainLineChartList2.size}")
-
                         }
 
                         if(CalculatorMainLineChartList1.isNotEmpty() && CalculatorMainLineChartList2.isEmpty()){
-                            Log.d("FormulaTest", "Drawing formula 1")
                             LineChart(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -325,7 +319,6 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
                         }
 
                         if(CalculatorMainLineChartList1.isEmpty() && CalculatorMainLineChartList2.isNotEmpty()){
-                            Log.d("FormulaTest", "Drawing formula 2")
                             LineChart(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -381,7 +374,9 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
                     xStart = newText.toFloat()
                 },
                 label = {
-                    Text(text = "x Lähtöarvo")
+                    Text(
+                        text = "x Lähtöarvo"
+                    )
                 },
             )
 
@@ -417,6 +412,19 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
         Row() {
             //Column 1
             Column() {
+                //Position 1.1
+                Text(
+                    fontSize = 15.sp,
+                    text = "Muokkaa \n kaavaa 1"
+                )
+
+                //Position 1.2
+                Text(
+                    fontSize = 15.sp,
+                    text = "Muokkaa \n kaavaa 2"
+                )
+
+                //Position 1.3
                 Button(
                     modifier = Modifier
                         .padding(5.dp, 1.dp, 5.dp, 1.dp)
@@ -427,23 +435,52 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
                         contentColor = Color.Black
                     ),
                     onClick = {
-                        if(CalculatorMainLineChartList1.isEmpty()) {
-                            Toast.makeText(context, "Lista on tyhjä, syötä ensin kaava!", Toast.LENGTH_SHORT).show()
-                        } else if(CalculatorMainSquareXIndex1 == CalculatorMainLineChartList1.size) {
-                            Toast.makeText(context, "x arvot on jo kerran muunnettu", Toast.LENGTH_SHORT).show()
-                        } else {
-                            while(CalculatorMainSquareXIndex1 < CalculatorMainLineChartList1.size) {
-                                val y = CalculatorMainLineChartList1[CalculatorMainSquareXIndex1].y
-                                val x = floatSquared(CalculatorMainLineChartList1[CalculatorMainSquareXIndex1].x)
-                                CalculatorMainLineChartList1[CalculatorMainSquareXIndex1] = Point(x,y)
-                                CalculatorMainSquareXIndex1++
+                        if(alteringChart1) {
+                            if(CalculatorMainLineChartList1.isEmpty()) {
+                                Toast.makeText(context, "Lista on tyhjä, syötä ensin kaava!", Toast.LENGTH_SHORT).show()
+                            } else if(CalculatorMainSquareXIndex1 == CalculatorMainLineChartList1.size) {
+                                Toast.makeText(context, "x arvot on jo kerran muunnettu", Toast.LENGTH_SHORT).show()
+                            } else {
+                                while(CalculatorMainSquareXIndex1 < CalculatorMainLineChartList1.size) {
+                                    val y = CalculatorMainLineChartList1[CalculatorMainSquareXIndex1].y
+                                    val x = floatSquared(CalculatorMainLineChartList1[CalculatorMainSquareXIndex1].x)
+                                    CalculatorMainLineChartList1[CalculatorMainSquareXIndex1] = Point(x,y)
+                                    CalculatorMainSquareXIndex1++
+                                }
 
-                                Log.d("modification", "Arvo $CalculatorMainSquareXIndex1 päivitetty x: $x ja y: $y arvoilla")
+                                text1 = ""
+                                text1 = formula1
+                                isChart1Altered = true
+
+                                distanceValue1 = 0.0f
+                                CalcMainDistanceIndex1 = 0
                             }
+                        }
 
-                            text1 = " "
-                            text1 = ""
-                            CalculatorMainSquareRootXIndex1 = 0
+                        if(alteringChart2) {
+                            if(CalculatorMainLineChartList2.isEmpty()) {
+                                Toast.makeText(context, "Lista on tyhjä, syötä ensin kaava!", Toast.LENGTH_SHORT).show()
+                            } else if(CalculatorMainSquareXIndex2 == CalculatorMainLineChartList2.size) {
+                                Toast.makeText(context, "x arvot on jo kerran muunnettu", Toast.LENGTH_SHORT).show()
+                            } else {
+                                while(CalculatorMainSquareXIndex2 < CalculatorMainLineChartList2.size) {
+                                    val y = CalculatorMainLineChartList2[CalculatorMainSquareXIndex2].y
+                                    val x = floatSquared(CalculatorMainLineChartList2[CalculatorMainSquareXIndex2].x)
+                                    CalculatorMainLineChartList2[CalculatorMainSquareXIndex2] = Point(x,y)
+                                    CalculatorMainSquareXIndex2++
+                                }
+
+                                text2 = ""
+                                text2 = formula2
+                                isChart2Altered = true
+
+                                distanceValue2 = 0.0f
+                                CalcMainDistanceIndex2 = 0
+                            }
+                        }
+
+                        if(!alteringChart1 && !alteringChart2) {
+                            Toast.makeText(context, "Valitse ainakin yksi kaava jota haluat muuntaa!", Toast.LENGTH_SHORT).show()
                         }
                     }
                 ) {
@@ -453,6 +490,7 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
                     )
                 }
 
+                //Position 1.4
                 Button(
                     modifier = Modifier
                         .padding(5.dp, 1.dp, 5.dp, 1.dp)
@@ -463,22 +501,50 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
                         contentColor = Color.Black
                     ),
                     onClick = {
-                        if(CalculatorMainLineChartList1.isEmpty()) {
-                            Toast.makeText(context, "Lista on tyhjä, syötä ensin kaava!", Toast.LENGTH_SHORT).show()
-                        } else if(CalculatorMainSquareYIndex1 == CalculatorMainLineChartList1.size){
-                            Toast.makeText(context, "y arvot on jo kerran muunnettu", Toast.LENGTH_SHORT).show()
-                        } else {
-                            while(CalculatorMainSquareYIndex1 < CalculatorMainLineChartList1.size) {
-                                val x = CalculatorMainLineChartList1[CalculatorMainSquareYIndex1].x
-                                val y = floatSquared(CalculatorMainLineChartList1[CalculatorMainSquareYIndex1].y)
-                                CalculatorMainLineChartList1[CalculatorMainSquareYIndex1] = Point(x,y)
-                                CalculatorMainSquareYIndex1++
+                        if(alteringChart1) {
+                            if(CalculatorMainLineChartList1.isEmpty()) {
+                                Toast.makeText(context, "Lista on tyhjä, syötä ensin kaava!", Toast.LENGTH_SHORT).show()
+                            } else if(CalculatorMainSquareYIndex1 == CalculatorMainLineChartList1.size){
+                                Toast.makeText(context, "y arvot on jo kerran muunnettu", Toast.LENGTH_SHORT).show()
+                            } else {
+                                while(CalculatorMainSquareYIndex1 < CalculatorMainLineChartList1.size) {
+                                    val x = CalculatorMainLineChartList1[CalculatorMainSquareYIndex1].x
+                                    val y = floatSquared(CalculatorMainLineChartList1[CalculatorMainSquareYIndex1].y)
+                                    CalculatorMainLineChartList1[CalculatorMainSquareYIndex1] = Point(x,y)
+                                    CalculatorMainSquareYIndex1++
+                                }
+                                text1 = ""
+                                text1 = formula1
+                                isChart1Altered = true
 
-                                Log.d("modification", "Arvo $CalculatorMainSquareYIndex1 päivitetty x: $x ja y: $y arvoilla")
+                                distanceValue1 = 0.0f
+                                CalcMainDistanceIndex1 = 0
                             }
-                            text1 = " "
-                            text1 = ""
-                            CalculatorMainSquareRootYIndex1 = 0
+                        }
+
+                        if(alteringChart2) {
+                            if(CalculatorMainLineChartList2.isEmpty()) {
+                                Toast.makeText(context, "Lista on tyhjä, syötä ensin kaava!", Toast.LENGTH_SHORT).show()
+                            } else if(CalculatorMainSquareYIndex2 == CalculatorMainLineChartList2.size){
+                                Toast.makeText(context, "y arvot on jo kerran muunnettu", Toast.LENGTH_SHORT).show()
+                            } else {
+                                while(CalculatorMainSquareYIndex2 < CalculatorMainLineChartList2.size) {
+                                    val x = CalculatorMainLineChartList2[CalculatorMainSquareYIndex2].x
+                                    val y = floatSquared(CalculatorMainLineChartList2[CalculatorMainSquareYIndex2].y)
+                                    CalculatorMainLineChartList2[CalculatorMainSquareYIndex2] = Point(x,y)
+                                    CalculatorMainSquareYIndex2++
+                                }
+                                text2 = ""
+                                text2 = formula2
+                                isChart2Altered = true
+
+                                distanceValue2= 0.0f
+                                CalcMainDistanceIndex2 = 0
+                            }
+                        }
+
+                        if(!alteringChart1 && !alteringChart2) {
+                            Toast.makeText(context, "Valitse ainakin yksi kaava jota haluat muuntaa!", Toast.LENGTH_SHORT).show()
                         }
                     }
                 ) {
@@ -487,7 +553,27 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
                         text = "y²"
                     )
                 }
+            }
 
+            //Column 2
+            Column() {
+                //Position 2.1
+                Switch(
+                    checked = alteringChart1,
+                    onCheckedChange = {
+                        alteringChart1 = it
+                    }
+                )
+
+                //Position 2.2
+                Switch(
+                    checked = alteringChart2,
+                    onCheckedChange = {
+                        alteringChart2 = it
+                    }
+                )
+
+                //Position 2.3
                 Button(
                     modifier = Modifier
                         .padding(5.dp, 1.dp, 5.dp, 1.dp)
@@ -498,23 +584,52 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
                         contentColor = Color.Black
                     ),
                     onClick = {
-                        if(CalculatorMainLineChartList1.isEmpty()) {
-                            Toast.makeText(context, "Lista on tyhjä, syötä ensin kaava!", Toast.LENGTH_SHORT).show()
-                        } else if(CalculatorMainSquareRootXIndex1 == CalculatorMainLineChartList1.size) {
-                            Toast.makeText(context, "x arvot on jo kerran muunnettu", Toast.LENGTH_SHORT).show()
-                        } else {
-                            while(CalculatorMainSquareRootXIndex1 < CalculatorMainLineChartList1.size) {
-                                val y = CalculatorMainLineChartList1[CalculatorMainSquareRootXIndex1].y
-                                val x = floatSquareRoot(CalculatorMainLineChartList1[CalculatorMainSquareRootXIndex1].x)
-                                CalculatorMainLineChartList1[CalculatorMainSquareRootXIndex1] = Point(x,y)
-                                CalculatorMainSquareRootXIndex1++
+                        if(alteringChart1) {
+                            if(CalculatorMainLineChartList1.isEmpty()) {
+                                Toast.makeText(context, "Lista on tyhjä, syötä ensin kaava!", Toast.LENGTH_SHORT).show()
+                            } else if(CalculatorMainSquareRootXIndex1 == CalculatorMainLineChartList1.size) {
+                                Toast.makeText(context, "x arvot on jo kerran muunnettu", Toast.LENGTH_SHORT).show()
+                            } else {
+                                while(CalculatorMainSquareRootXIndex1 < CalculatorMainLineChartList1.size) {
+                                    val y = CalculatorMainLineChartList1[CalculatorMainSquareRootXIndex1].y
+                                    val x = floatSquareRoot(CalculatorMainLineChartList1[CalculatorMainSquareRootXIndex1].x)
+                                    CalculatorMainLineChartList1[CalculatorMainSquareRootXIndex1] = Point(x,y)
+                                    CalculatorMainSquareRootXIndex1++
+                                }
 
-                                Log.d("modification", "Arvo $CalculatorMainSquareRootXIndex1 päivitetty x: $x ja y: $y arvoilla")
+                                text1 = " "
+                                text1 = formula1
+                                isChart1Altered = true
+
+                                distanceValue1 = 0.0f
+                                CalcMainDistanceIndex1 = 0
                             }
+                        }
 
-                            text1 = " "
-                            text1 = ""
-                            CalculatorMainSquareXIndex1 = 0
+                        if(alteringChart2) {
+                            if(CalculatorMainLineChartList2.isEmpty()) {
+                                Toast.makeText(context, "Lista on tyhjä, syötä ensin kaava!", Toast.LENGTH_SHORT).show()
+                            } else if(CalculatorMainSquareRootXIndex2 == CalculatorMainLineChartList2.size) {
+                                Toast.makeText(context, "x arvot on jo kerran muunnettu", Toast.LENGTH_SHORT).show()
+                            } else {
+                                while(CalculatorMainSquareRootXIndex2 < CalculatorMainLineChartList2.size) {
+                                    val y = CalculatorMainLineChartList2[CalculatorMainSquareRootXIndex2].y
+                                    val x = floatSquareRoot(CalculatorMainLineChartList2[CalculatorMainSquareRootXIndex2].x)
+                                    CalculatorMainLineChartList2[CalculatorMainSquareRootXIndex2] = Point(x,y)
+                                    CalculatorMainSquareRootXIndex2++
+                                }
+
+                                text2 = " "
+                                text2 = formula2
+                                isChart2Altered = true
+
+                                distanceValue2 = 0.0f
+                                CalcMainDistanceIndex2 = 0
+                            }
+                        }
+
+                        if(!alteringChart1 && !alteringChart2) {
+                            Toast.makeText(context, "Valitse ainakin yksi kaava jota haluat muuntaa!", Toast.LENGTH_SHORT).show()
                         }
                     }
                 ) {
@@ -524,6 +639,7 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
                     )
                 }
 
+                //Position 2.4
                 Button(
                     modifier = Modifier
                         .padding(5.dp, 1.dp, 5.dp, 1.dp)
@@ -534,103 +650,64 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
                         contentColor = Color.Black
                     ),
                     onClick = {
-                        if(CalculatorMainLineChartList1.isEmpty()) {
-                            Toast.makeText(context, "Lista on tyhjä, syötä ensin kaava!", Toast.LENGTH_SHORT).show()
-                        } else if(CalculatorMainSquareRootYIndex1 == CalculatorMainLineChartList1.size) {
-                            Toast.makeText(context, "y arvot on jo kerran muunnettu", Toast.LENGTH_SHORT).show()
-                        } else {
-                            while(CalculatorMainSquareRootYIndex1 < CalculatorMainLineChartList1.size) {
-                                val y = CalculatorMainLineChartList1[CalculatorMainSquareRootYIndex1].x
-                                val x = floatSquareRoot(CalculatorMainLineChartList1[CalculatorMainSquareRootYIndex1].y)
-                                CalculatorMainLineChartList1[CalculatorMainSquareRootYIndex1] = Point(x,y)
-                                CalculatorMainSquareRootYIndex1++
+                        if(alteringChart1) {
+                            if(CalculatorMainLineChartList1.isEmpty()) {
+                                Toast.makeText(context, "Lista on tyhjä, syötä ensin kaava!", Toast.LENGTH_SHORT).show()
+                            } else if(CalculatorMainSquareRootYIndex1 == CalculatorMainLineChartList1.size) {
+                                Toast.makeText(context, "y arvot on jo kerran muunnettu", Toast.LENGTH_SHORT).show()
+                            } else {
+                                while(CalculatorMainSquareRootYIndex1 < CalculatorMainLineChartList1.size) {
+                                    val y = CalculatorMainLineChartList1[CalculatorMainSquareRootYIndex1].x
+                                    val x = floatSquareRoot(CalculatorMainLineChartList1[CalculatorMainSquareRootYIndex1].y)
+                                    CalculatorMainLineChartList1[CalculatorMainSquareRootYIndex1] = Point(x,y)
+                                    CalculatorMainSquareRootYIndex1++
+                                }
 
-                                Log.d("modification", "Arvo $CalculatorMainSquareRootYIndex1 päivitetty x: $x ja y: $y arvoilla")
+                                text1 = " "
+                                text1 = formula1
+                                isChart1Altered = true
+
+                                distanceValue1 = 0.0f
+                                CalcMainDistanceIndex1 = 0
                             }
+                        }
 
-                            text1 = " "
-                            text1 = ""
-                            CalculatorMainSquareYIndex1 = 0
+                        if(alteringChart2) {
+                            if(CalculatorMainLineChartList2.isEmpty()) {
+                                Toast.makeText(context, "Lista on tyhjä, syötä ensin kaava!", Toast.LENGTH_SHORT).show()
+                            } else if(CalculatorMainSquareRootYIndex2 == CalculatorMainLineChartList2.size) {
+                                Toast.makeText(context, "y arvot on jo kerran muunnettu", Toast.LENGTH_SHORT).show()
+                            } else {
+                                while(CalculatorMainSquareRootYIndex2 < CalculatorMainLineChartList2.size) {
+                                    val y = CalculatorMainLineChartList2[CalculatorMainSquareRootYIndex2].x
+                                    val x = floatSquareRoot(CalculatorMainLineChartList2[CalculatorMainSquareRootYIndex2].y)
+                                    CalculatorMainLineChartList2[CalculatorMainSquareRootYIndex2] = Point(x,y)
+                                    CalculatorMainSquareRootYIndex2++
+                                }
+
+                                text2 = " "
+                                text2 = formula2
+                                isChart2Altered = true
+
+                                distanceValue2 = 0.0f
+                                CalcMainDistanceIndex2 = 0
+                            }
+                        }
+
+                        if(!alteringChart1 && !alteringChart2) {
+                            Toast.makeText(context, "Valitse ainakin yksi kaava jota haluat muuntaa!", Toast.LENGTH_SHORT).show()
                         }
                     }
                 ) {
                     Text(
                         fontSize = 15.sp,
-                        text = "²√y"
-                    )
-                }
-            }
-
-            //Column 2
-            Column() {
-                Button(
-                    modifier = Modifier
-                        .padding(5.dp, 1.dp, 5.dp, 1.dp)
-                        .width(70.dp),
-                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Cyan,
-                        contentColor = Color.Black
-                    ),
-                    onClick = {
-
-                    }
-                ) {
-                    Text("")
-                }
-
-                Button(
-                    modifier = Modifier
-                        .padding(5.dp, 1.dp, 5.dp, 1.dp)
-                        .width(70.dp),
-
-                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Cyan,
-                        contentColor = Color.Black
-                    ),
-                    onClick = {
-
-                    }
-                ) {
-                    Text("")
-                }
-
-                Button(
-                    modifier = Modifier
-                        .padding(5.dp, 1.dp, 5.dp, 1.dp)
-                        .width(70.dp),
-                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Cyan,
-                        contentColor = Color.Black
-                    ),
-                    onClick = {
-
-                    }
-                ) {
-                    Text("")
-                }
-
-                Button(
-                    modifier = Modifier
-                        .padding(5.dp, 1.dp, 5.dp, 1.dp)
-                        .width(70.dp),
-                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Cyan,
-                        contentColor = Color.Black
-                    ),
-                    onClick = {
-
-                    }
-                ) {
-                    Text("")
+                        text = "²√y")
                 }
             }
 
             //Column 3
             Column() {
+                //Position 3.1
                 Button(
                     modifier = Modifier
                         .padding(5.dp, 1.dp, 5.dp, 1.dp)
@@ -647,6 +724,7 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
                     Text("")
                 }
 
+                //Position 3.2
                 Button(
                     modifier = Modifier
                         .padding(5.dp, 1.dp, 5.dp, 1.dp)
@@ -663,6 +741,7 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
                     Text("")
                 }
 
+                //Position 3.3
                 Button(
                     modifier = Modifier
                         .padding(5.dp, 1.dp, 5.dp, 1.dp)
@@ -679,6 +758,7 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
                     Text("")
                 }
 
+                //Position 3.4
                 Button(
                     modifier = Modifier
                         .padding(5.dp, 1.dp, 5.dp, 1.dp)
@@ -698,6 +778,7 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
 
             //Column 4
             Column() {
+                //Position 4.
                 Button(
                     modifier = Modifier
                         .padding(5.dp, 1.dp, 5.dp, 1.dp)
@@ -708,111 +789,67 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
                         contentColor = Color.Black
                     ),
                     onClick = {
+                        if(formula1 == text1 && formula2 == text2 && !isChart1Altered && !isChart2Altered){
+                            Toast.makeText(context, "Syötetyt kaavat on jo piirretty! \nPäivitä kaavoja ja kokeile uudelleen.", Toast.LENGTH_SHORT).show()
+                        }
+
+                        if(text1.isEmpty() && text2.isEmpty()) {
+                            Toast.makeText(context, "Syötä vähintään yksi kaava!", Toast.LENGTH_SHORT).show()
+                        }
 
                         xValue1 = xStart
                         xValue2 = xStart
 
-                        formula1 = text1
-                        formula2 = text2
-
-                        //text in both boxes --> calculate both formulas
-                        if(formula1.isNotEmpty() && formula2.isNotEmpty()) {
-                            if(!CalculatorMainFormula1Calculated){
-                                CoroutineScope(IO).launch {
-                                    while(xValue1 <= xEnd) {
-                                        x1 = Argument("x=$xValue1")
-                                        y1 = Argument(formula1, x1)
-                                        e1 = Expression("y", y1)
-
-                                        CalculatorMainLineChartList1.add(Point(xValue1, e1.calculate().toFloat(), ""))
-
-                                        Log.d("FormulaTest", "Point added to list 1 is: x: ${xValue1.formatToSinglePrecision().toFloat() }, y: " + e1.calculate().toString())
-                                        Log.d("FormulaTest", "Point added is in position ${CalculatorMainLineChartList1.size}")
-
-                                        xValue1 = xValue1 + xIncrement
+                        if(text1.isNotEmpty() && formula1 != text1 || text1.isNotEmpty() && formula1 == text1 && isChart1Altered) {
+                            formula1 = text1
+                            CoroutineScope(IO).launch {
+                                if (CalculatorMainLineChartList1.isNotEmpty()) {
+                                    while(CalculatorMainLineChartList1.isNotEmpty()) {
+                                        CalculatorMainLineChartList1.removeAt(CalculatorMainLineChartList1.size -1)
                                     }
-                                    text1 = ""
-                                    text1 = formula1
-                                    CalculatorMainFormula1Calculated = true
                                 }
-                            }
 
-                            if(!CalculatorMainFormula2Calculated) {
-                                CoroutineScope(IO).launch {
-                                    while(xValue2 <= xEnd) {
-                                        x2 = Argument("x=$xValue2")
-                                        y2 = Argument(formula2, x2)
-                                        e2 = Expression("y", y2)
-
-                                        CalculatorMainLineChartList2.add(Point(xValue2, e2.calculate().toFloat(), ""))
-
-                                        Log.d("FormulaTest", "Point added to list 2 is: x: ${xValue2.formatToSinglePrecision().toFloat()}, y: " + e2.calculate().toString())
-                                        Log.d("FormulaTest", "Point added is in position ${CalculatorMainLineChartList2.size}")
-
-                                        xValue2 = xValue2 + xIncrement
-                                    }
-                                    text2 = ""
-                                    text2 = formula2
-                                    CalculatorMainFormula2Calculated = true
+                                while(xValue1 <= xEnd) {
+                                    x1 = Argument("x=$xValue1")
+                                    y1 = Argument(formula1, x1)
+                                    e1 = Expression("y", y1)
+                                    CalculatorMainLineChartList1.add(Point(xValue1, e1.calculate().toFloat(), ""))
+                                    xValue1 = xValue1 + xIncrement
                                 }
+                                text1 = ""
+                                text1 = formula1
+                                isChart1Altered = false
                             }
                         }
 
-                        //text in only box 1 --> calculate formula 1
-                        if(formula1.isNotEmpty() && formula2.isEmpty()) {
-                            if(!CalculatorMainFormula1Calculated) {
-                                CoroutineScope(IO).launch {
-                                    while(xValue1 <= xEnd) {
-                                        x1 = Argument("x=$xValue1")
-                                        y1 = Argument(formula1, x1)
-                                        e1 = Expression("y", y1)
-
-                                        CalculatorMainLineChartList1.add(Point(xValue1, e1.calculate().toFloat(), ""))
-
-                                        Log.d("FormulaTest", "Point added to list 1 is: x: ${xValue1.formatToSinglePrecision().toFloat() }, y: " + e1.calculate().toString())
-                                        Log.d("FormulaTest", "Point added is in position ${CalculatorMainLineChartList1.size}")
-
-                                        xValue1 = xValue1 + xIncrement
+                        if(text2.isNotEmpty() && formula2 != text2 || text2.isNotEmpty() && formula2 == text2 && isChart2Altered) {
+                            formula2 = text2
+                            CoroutineScope(IO).launch {
+                                if (CalculatorMainLineChartList2.isNotEmpty()) {
+                                    while(CalculatorMainLineChartList2.isNotEmpty()) {
+                                        CalculatorMainLineChartList2.removeAt(CalculatorMainLineChartList2.size -1)
                                     }
-                                    text1 = ""
-                                    text1 = formula1
-                                    CalculatorMainFormula1Calculated = true
                                 }
-                            }
-                        }
 
-                        //text in only box 2
-                        if(formula1.isEmpty() && formula2.isNotEmpty()) {
-                            if(!CalculatorMainFormula2Calculated){
-                                CoroutineScope(IO).launch {
-                                    while(xValue2 <= xEnd) {
-                                        x2 = Argument("x=$xValue2")
-                                        y2 = Argument(formula2, x2)
-                                        e2 = Expression("y", y2)
-
-                                        CalculatorMainLineChartList2.add(Point(xValue2, e2.calculate().toFloat(), ""))
-
-                                        Log.d("FormulaTest", "Point added to list 2 is: x: ${xValue2.formatToSinglePrecision().toFloat()}, y: " + e2.calculate().toString())
-                                        Log.d("FormulaTest", "Point added is in position ${CalculatorMainLineChartList2.size}")
-
-                                        xValue2 = xValue2 + xIncrement
-                                    }
-
-                                    text2 = ""
-                                    text2 = formula2
-                                    CalculatorMainFormula2Calculated = true
+                                while(xValue2 <= xEnd) {
+                                    x2 = Argument("x=$xValue2")
+                                    y2 = Argument(formula2, x2)
+                                    e2 = Expression("y", y2)
+                                    CalculatorMainLineChartList2.add(Point(xValue2, e2.calculate().toFloat(), ""))
+                                    xValue2 = xValue2 + xIncrement
                                 }
-                            }
-                        }
 
-                        if(formula1.isEmpty() && formula2.isEmpty()) {
-                            Toast.makeText(context, "Syötä vähintään yksi kaava!", Toast.LENGTH_SHORT).show()
+                                text2 = ""
+                                text2 = formula2
+                                isChart2Altered = false
+                            }
                         }
                     }
                 ) {
                     Text("Piirrä kaava(t)")
                 }
 
+                //Position 4.2
                 Button(
                     modifier = Modifier
                         .padding(5.dp, 1.dp, 5.dp, 1.dp)
@@ -823,28 +860,13 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
                         contentColor = Color.Black
                     ),
                     onClick = {
-                        if (CalculatorMainLineChartList1.isNotEmpty()) {
-                            while(CalculatorMainLineChartList1.isNotEmpty()) {
-                                CalculatorMainLineChartList1.removeAt(CalculatorMainLineChartList1.size -1)
-                            }
 
-                            text1 = " "
-                            text1 = ""
-                            formula1 = ""
-
-                            CalculatorMainSquareXIndex1 = 0
-                            CalculatorMainSquareYIndex1 = 0
-
-                            chart1DistanceCalculated = false
-                            chart2DistanceCalculated = false
-                        } else {
-                            Toast.makeText(context, "Taulukko on jo tyhjä!", Toast.LENGTH_SHORT).show()
-                        }
                     }
                 ) {
-                    Text("Tyhjennä kaavat")
+                    Text("")
                 }
 
+                //Position 4.3
                 Button(
                     modifier = Modifier
                         .padding(5.dp, 1.dp, 5.dp, 1.dp)
@@ -863,7 +885,6 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
                                     var list1y1 = CalculatorMainLineChartList1[CalcMainDistanceIndex1].y
                                     var list1y2 = CalculatorMainLineChartList1[CalcMainDistanceIndex1+1].y
                                     distanceValue1 = distanceValue1 + distanceBetweenPoints(list1x1, list1y1, list1x2, list1y2)
-                                    Log.d("Distance", "Total distance: $distanceValue1")
                                     CalcMainDistanceIndex1++
                                 }
 
@@ -880,7 +901,6 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
                                     var list2y1 = CalculatorMainLineChartList2[CalcMainDistanceIndex2].y
                                     var list2y2 = CalculatorMainLineChartList2[CalcMainDistanceIndex2+1].y
                                     distanceValue2 = distanceValue2 + distanceBetweenPoints(list2x1, list2y1, list2x2, list2y2)
-                                    Log.d("Distance", "Total distance: $distanceValue2")
                                     CalcMainDistanceIndex2++
                                 }
 
@@ -888,25 +908,78 @@ fun GraphingCalculatorUIScreen(navController: NavController) {
                                 chart2DistanceCalculated = true
                             }
                         }
+
+                        if(CalculatorMainLineChartList1.isEmpty() && CalculatorMainLineChartList2.isEmpty()) {
+                            Toast.makeText(context, "Kaavoja ei ole piirretty! \nPiirrä kaavat ja laske uudelleen.", Toast.LENGTH_SHORT).show()
+                        }
+
+                        if(distanceValue1 != 0.0f && distanceValue2 != 0.0f){
+                            Toast.makeText(context, "Pituudet on jo laskettu! \nSyötä uudet kaavat tai muunna dataa!.", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 ) {
                     Text("Laske pituus")
                 }
 
+                //Position 4.4
                 Button(
                     modifier = Modifier
                         .padding(5.dp, 1.dp, 5.dp, 1.dp)
                         .width(200.dp),
                     shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Green,
+                        containerColor = Color.Cyan,
                         contentColor = Color.Black
                     ),
                     onClick = {
-                        navController.navigateUp()
+                        if (CalculatorMainLineChartList1.isEmpty() && CalculatorMainLineChartList2.isEmpty()) {
+                            Toast.makeText(context, "Taulukko on jo tyhjä!", Toast.LENGTH_SHORT).show()
+                        }
+
+                        if (CalculatorMainLineChartList1.isNotEmpty()) {
+                            while(CalculatorMainLineChartList1.isNotEmpty()) {
+                                CalculatorMainLineChartList1.removeAt(CalculatorMainLineChartList1.size -1)
+                            }
+
+                            text1 = " "
+                            text1 = ""
+                            formula1 = ""
+
+                            CalculatorMainSquareXIndex1 = 0
+                            CalculatorMainSquareYIndex1 = 0
+                            CalculatorMainSquareRootXIndex1 = 0
+                            CalculatorMainSquareRootYIndex1 = 0
+
+                            chart1DistanceCalculated = false
+                            isChart1Altered = false
+
+                            distanceValue1 = 0.0f
+                            CalcMainDistanceIndex1 = 0
+                        }
+
+                        if (CalculatorMainLineChartList2.isNotEmpty()) {
+                            while(CalculatorMainLineChartList2.isNotEmpty()) {
+                                CalculatorMainLineChartList2.removeAt(CalculatorMainLineChartList2.size -1)
+                            }
+
+                            text2 = " "
+                            text2 = ""
+                            formula2 = ""
+
+                            CalculatorMainSquareXIndex2 = 0
+                            CalculatorMainSquareYIndex2 = 0
+                            CalculatorMainSquareRootXIndex2 = 0
+                            CalculatorMainSquareRootYIndex2 = 0
+
+                            chart2DistanceCalculated = false
+                            isChart2Altered = false
+
+                            distanceValue2 = 0.0f
+                            CalcMainDistanceIndex2 = 0
+                        }
                     }
                 ) {
-                    Text("Päävalikko")
+                    Text("Tyhjennä kaavat")
                 }
             }
         }

@@ -365,8 +365,8 @@ fun HomeScreen(navController: NavController) {
                     }
                 ) {
                     Text(
-                        fontSize = 13.sp,
-                        text = "Graphing Calculator UI"
+                        fontSize = 12.sp,
+                        text = "Graphing Calculator Main"
                     )
                 }
             }
