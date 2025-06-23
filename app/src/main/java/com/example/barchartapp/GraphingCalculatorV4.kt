@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -26,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -61,6 +63,8 @@ fun GraphingCalculatorScreen4(navController: NavController) {
     var kText by remember { mutableStateOf("") }
     var rText by remember { mutableStateOf("") }
 
+    var centerPoint by remember {mutableStateOf("")}
+
     var hDisplayText = ""
     var kDisplayText = ""
     var rDisplayText = ""
@@ -69,6 +73,7 @@ fun GraphingCalculatorScreen4(navController: NavController) {
     var k by remember { mutableFloatStateOf(0.0f) }
     var r by remember { mutableFloatStateOf(0.0f) }
     var t by remember { mutableFloatStateOf(0.0f) }
+    var tIncrement by remember {mutableFloatStateOf(0.0f)}
 
     var e1: Expression
     var e2: Expression
@@ -191,8 +196,12 @@ fun GraphingCalculatorScreen4(navController: NavController) {
             )
 
             Text(
-                modifier = Modifier.padding(10.dp),
-                text = "Piirretty kaava:"
+                modifier = Modifier.padding(20.dp),
+                fontSize = 18.sp,
+                text = "Piirrä ympyrä kuvaajaan täydentämällä alla olevaa kaavaa "
+                        //"\n(x²-h) + (y²-k) = r² " +
+                        //"\nx = h + r * cos(t), jossa t=[0-2π]" +
+                        //"\ny = k + r * sin(t), jossa t=[0-2π]"
             )
 
             Box(
@@ -202,7 +211,7 @@ fun GraphingCalculatorScreen4(navController: NavController) {
             ) {
                 Log.d("FormulaTest", "Checking if chart can be drawed")
 
-                if(Calculator4lineChartList.isNotEmpty()){
+                if(Calculator4lineChartList.isNotEmpty() && Calculator4lineChartListCenter.isNotEmpty()){
                     Log.d("FormulaTest", "Drawing Chart")
                     LineChart(
                         modifier = Modifier
@@ -214,112 +223,162 @@ fun GraphingCalculatorScreen4(navController: NavController) {
             }
 
             Row() {
-                Text(
-                    text = "(x$hDisplayText)² - (y$kDisplayText)² = $rDisplayText²",
-                    fontSize = 25.sp
-                )
+                Column() {
+                    Text(
+                        modifier = Modifier.width(150.dp),
+                        text = "Kaava:",
+                        fontSize = 20.sp
+                    )
+
+                    Text(
+                        modifier = Modifier.width(150.dp),
+                        text = "Keskipiste:",
+                        fontSize = 20.sp
+                    )
+                }
+                Column() {
+                    Text(
+                        text = "(x$hDisplayText)² + (y$kDisplayText)² = $rDisplayText²",
+                        fontSize = 20.sp
+                    )
+
+                    Text(
+                        text = centerPoint,
+                        fontSize = 20.sp
+                    )
+                }
             }
 
-            Row() {
-                Text(
-                    modifier = Modifier
-                        .padding(10.dp),
-                    text = "Syötä h: ",
-                    fontSize = 20.sp
-                )
-
-                TextField(
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .height(50.dp)
-                        .width(100.dp),
-                    value = hText,
-                    onValueChange = { newText ->
-                        hText = newText
-                    },
-                )
-            }
-
-            Row() {
-                Text(
-                    modifier = Modifier
-                        .padding(10.dp),
-                    text = "Syötä k: ",
-                    fontSize = 20.sp
-                )
-
-                TextField(
-                    textStyle = TextStyle(fontSize = 15.sp),
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .height(50.dp)
-                        .width(100.dp),
-                    value = kText,
-                    onValueChange = { newText ->
-                        kText = newText
-                    }
-                )
-            }
-
-            Row() {
-                Text(
-                    modifier = Modifier
-                        .padding(10.dp),
+            Row(
+                modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
+            ) {
+                Column(){
+                    Text(
+                        modifier = Modifier
+                            .padding(10.dp, 13.dp, 10.dp, 0.dp)
+                            .height(50.dp)
+                            .width(80.dp),
+                        text = "Syötä h: ",
+                        fontSize = 20.sp
+                    )
+                    Text(
+                        modifier = Modifier
+                            .padding(10.dp, 13.dp, 10.dp, 0.dp)
+                            .height(50.dp)
+                            .width(80.dp),
+                        text = "Syötä k: ",
+                        fontSize = 20.sp
+                    )
+                    Text(
+                            modifier = Modifier
+                                .padding(10.dp, 13.dp, 10.dp, 0.dp)
+                                .height(50.dp)
+                                .width(80.dp),
                     text = "Syötä r: ",
                     fontSize = 20.sp
-                )
+                    )
+                }
 
-                TextField(
-                    textStyle = TextStyle(fontSize = 15.sp),
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .height(50.dp)
-                        .width(100.dp),
-                    value = rText,
-                    onValueChange = { newText ->
-                        rText = newText
-                    }
-                )
+                Column() {
+                    TextField(
+                        modifier = Modifier
+                            .padding(5.dp)
+                            .height(50.dp)
+                            .width(100.dp),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number
+                        ),
+                        value = hText,
+                        onValueChange = { newText ->
+                            hText = newText
+                        },
+                    )
+                    TextField(
+                        textStyle = TextStyle(fontSize = 15.sp),
+                        modifier = Modifier
+                            .padding(5.dp)
+                            .height(50.dp)
+                            .width(100.dp),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number
+                        ),
+                        value = kText,
+                        onValueChange = { newText ->
+                            kText = newText
+                        }
+                    )
+                    TextField(
+                        textStyle = TextStyle(fontSize = 15.sp),
+                        modifier = Modifier
+                            .padding(5.dp)
+                            .height(50.dp)
+                            .width(100.dp),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number
+                        ),
+                        value = rText,
+                        onValueChange = { newText ->
+                            rText = newText
+                        }
+                    )
+                }
             }
 
             Row() {
                 Button(
-                    modifier = Modifier.padding(0.dp, 0.dp, 20.dp, 0.dp),
+                    modifier = Modifier.padding(0.dp, 0.dp, 10.dp, 0.dp),
                     onClick = {
+                        if(Calculator4lineChartList.isEmpty() && Calculator4lineChartListCenter.isEmpty()) {
+                            //if(rText.toFloat() < 2) {
+                            //    tIncrement = 0.05f
+                            //}
 
-                        //h ja k pitää ottaa vastakkaiset arvot!!
-                        k = kText.toFloat()
-                        h = hText.toFloat()
-                        r = rText.toFloat()
-
-                        //Center dot
-                        Calculator4lineChartListCenter.add(Point(h+0.05f, k))
-                        Calculator4lineChartListCenter.add(Point(h, k-0.05f))
-                        Calculator4lineChartListCenter.add(Point(h-0.05f, k))
-                        Calculator4lineChartListCenter.add(Point(h, k-0.05f))
-                        Calculator4lineChartListCenter.add(Point(h+0.05f, k))
-
-                        CoroutineScope(IO).launch {
-                            while(t <= 2){
-                                var xFormula = Argument("x=$h+$r*cos($t π)")
-                                e1 = Expression("x", xFormula)
-
-                                xValue = e1.calculate().toFloat()
-
-                                var yFormula = Argument("y=$k+$r*sin($t π)")
-                                e2 = Expression("y", yFormula)
-
-                                yValue = e2.calculate().toFloat()
-
-                                Log.d("CircleTest", "Point added: ($xValue, $yValue)")
-
-                                Calculator4lineChartList.add(Point(xValue, yValue))
-
-                                t = t + 0.025f
+                            if(kText.toFloat() > 0) {
+                                k = kText.toFloat() - kText.toFloat() - kText.toFloat()
+                            } else {
+                                k = kText.toFloat() + kText.toFloat() + kText.toFloat()
                             }
 
-                            uiUpdate = " "
-                            uiUpdate = ""
+                            if(hText.toFloat() > 0) {
+                                h = hText.toFloat() - hText.toFloat() - hText.toFloat()
+                            } else {
+                                h = hText.toFloat() + hText.toFloat() + hText.toFloat()
+                            }
+
+                            r = rText.toFloat() * rText.toFloat()
+
+                            //Center dot
+                            Calculator4lineChartListCenter.add(Point(h+0.05f, k))
+                            Calculator4lineChartListCenter.add(Point(h, k-0.05f))
+                            Calculator4lineChartListCenter.add(Point(h-0.05f, k))
+                            Calculator4lineChartListCenter.add(Point(h, k-0.05f))
+                            Calculator4lineChartListCenter.add(Point(h+0.05f, k))
+
+                            CoroutineScope(IO).launch {
+                                while(t <= 2){
+                                    var xFormula = Argument("x=$h+$r*cos($t π)")
+                                    e1 = Expression("x", xFormula)
+
+                                    xValue = e1.calculate().toFloat()
+
+                                    var yFormula = Argument("y=$k+$r*sin($t π)")
+                                    e2 = Expression("y", yFormula)
+
+                                    yValue = e2.calculate().toFloat()
+
+                                    Log.d("CircleTest", "Point added: ($xValue, $yValue)")
+
+                                    Calculator4lineChartList.add(Point(xValue, yValue))
+
+                                    t = t + 0.01f
+                                }
+
+                                uiUpdate = " "
+                                uiUpdate = ""
+                            }
+                            centerPoint = "($h,$k)"
+                        } else {
+                            Toast.makeText(context, "Kaava piirretty jo, tyhjennä taulukko ja yritä uudestaan!", Toast.LENGTH_SHORT).show()
                         }
                     }
                 ) {
@@ -328,7 +387,26 @@ fun GraphingCalculatorScreen4(navController: NavController) {
 
                 Button(
                     onClick = {
+                        if (Calculator4lineChartList.isNotEmpty() && Calculator4lineChartListCenter.isNotEmpty()) {
+                            CoroutineScope(IO).launch {
+                                while(Calculator4lineChartList.isNotEmpty()) {
+                                    Calculator4lineChartList.removeAt(Calculator4lineChartList.size -1)
+                                }
+                                while(Calculator4lineChartListCenter.isNotEmpty()) {
+                                    Calculator4lineChartListCenter.removeAt(Calculator4lineChartListCenter.size -1)
+                                }
+                                Log.d("LenghtCheck", "Main Chart ${Calculator4lineChartList.size}")
+                                Log.d("LenghtCheck", "Center: ${Calculator4lineChartListCenter.size}")
+                            }
+                        } else {
+                            Toast.makeText(context, "Taulukko on jo tyhjä!", Toast.LENGTH_SHORT).show()
+                        }
 
+                        hText = ""
+                        kText = ""
+                        rText = ""
+                        centerPoint = ""
+                        t = 0.0f
                     }
                 ) {
                     Text("Tyhjennä kuvaaja")
@@ -336,7 +414,7 @@ fun GraphingCalculatorScreen4(navController: NavController) {
             }
 
             Box(
-                modifier = Modifier.padding(0.dp, 50.dp, 0.dp, 0.dp),
+                modifier = Modifier.padding(5.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Button(

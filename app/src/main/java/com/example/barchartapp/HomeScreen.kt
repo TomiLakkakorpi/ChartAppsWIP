@@ -271,7 +271,7 @@ fun HomeScreen(navController: NavController) {
                 ) {
                     Text(
                         fontSize = 13.sp,
-                        text = "Graphing Calculator V1"
+                        text = "Graphing Calculator V1 \nArvojen syöttö"
                     )
                 }
 
@@ -290,7 +290,7 @@ fun HomeScreen(navController: NavController) {
                 ) {
                     Text(
                         fontSize = 13.sp,
-                        text = "Graphing Calculator V2"
+                        text = "Graphing Calculator V2 \nYksi kaava"
                     )
                 }
 
@@ -309,7 +309,7 @@ fun HomeScreen(navController: NavController) {
                 ) {
                     Text(
                         fontSize = 13.sp,
-                        text = "Graphing Calculator V3"
+                        text = "Graphing Calculator V3 \nKaksi kaavaa"
                     )
                 }
 
@@ -328,7 +328,7 @@ fun HomeScreen(navController: NavController) {
                 ) {
                     Text(
                         fontSize = 13.sp,
-                        text = "Graphing Calculator V4"
+                        text = "Graphing Calculator V4 \nYmpyrän piirto"
                     )
                 }
 
@@ -347,7 +347,7 @@ fun HomeScreen(navController: NavController) {
                 ) {
                     Text(
                         fontSize = 13.sp,
-                        text = "Graphing Calculator V5"
+                        text = "Graphing Calculator V5 \nDatan muunnokset"
                     )
                 }
 
