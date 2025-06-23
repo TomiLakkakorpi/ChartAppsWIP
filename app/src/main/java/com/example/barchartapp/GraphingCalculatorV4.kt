@@ -39,6 +39,9 @@ import co.yml.charts.ui.wavechart.WaveChart
 import co.yml.charts.ui.wavechart.model.Wave
 import co.yml.charts.ui.wavechart.model.WaveChartData
 import co.yml.charts.ui.wavechart.model.WavePlotData
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 import org.mariuszgromada.math.mxparser.Argument
 import org.mariuszgromada.math.mxparser.Expression
 
@@ -47,24 +50,25 @@ var Calculator4lineChartList = mutableListOf<Point>()
 @Composable
 fun GraphingCalculatorScreen4(navController: NavController) {
 
-    var text by remember { mutableStateOf("") }
-    var xStart by remember { mutableFloatStateOf(-5.0f) }
-    var xEnd by remember { mutableFloatStateOf(5.0f) }
-    var xIncrement by remember { mutableFloatStateOf(0.1f) }
-    var xValue by remember {mutableFloatStateOf(0.5f)}
+    var hText by remember { mutableStateOf("") }
+    var kText by remember { mutableStateOf("") }
+    var rText by remember { mutableStateOf("") }
 
-    var e: Expression
-    var x: Argument
-    var y: Argument
+    var h by remember { mutableFloatStateOf(0.0f) }
+    var k by remember { mutableFloatStateOf(0.0f) }
+    var r by remember { mutableFloatStateOf(0.0f) }
+    var t by remember { mutableFloatStateOf(0.0f) }
+
+    var t1Value by remember { mutableFloatStateOf(0.0f) }
+    var t2Value by remember { mutableFloatStateOf(0.0f) }
 
     var e1: Expression
-    var formula1: Argument
-    var y1: Argument
+    var e2: Expression
 
-    formula1 = Argument("(x−3)^2+(y−4)^2=25")
-    e1 = Expression("x", formula1)
+    var t2: Argument
 
-    Log.d("EquationCheck", "${e1.calculate()}")
+    var xValue by remember {mutableFloatStateOf(0.0f)}
+    var yValue by remember {mutableFloatStateOf(0.0f)}
 
     var formula by remember {mutableStateOf("")}
 
@@ -148,13 +152,37 @@ fun GraphingCalculatorScreen4(navController: NavController) {
             }
 
             TextField(
-                modifier = Modifier.width(200.dp),
-                value = text,
+                modifier = Modifier
+                    .padding(0.dp, 50.dp, 0.dp, 0.dp)
+                    .width(200.dp),
+                value = hText,
                 onValueChange = { newText ->
-                    text = newText
+                    hText = newText
                 },
                 label = {
-                    Text(text = "Kirjoita kaavio")
+                    Text(text = "Syötä h")
+                },
+            )
+
+            TextField(
+                modifier = Modifier.width(200.dp),
+                value = kText,
+                onValueChange = { newText ->
+                    kText = newText
+                },
+                label = {
+                    Text(text = "Syötä k")
+                },
+            )
+
+            TextField(
+                modifier = Modifier.width(200.dp),
+                value = rText,
+                onValueChange = { newText ->
+                    rText = newText
+                },
+                label = {
+                    Text(text = "Syötä r")
                 },
             )
 
@@ -162,28 +190,38 @@ fun GraphingCalculatorScreen4(navController: NavController) {
                 Button(
                     modifier = Modifier.padding(0.dp, 0.dp, 20.dp, 0.dp),
                     onClick = {
-                        if(text.isNotEmpty()){
-                            while(xValue <= xEnd) {
-                                x = Argument("x=$xValue")
-                                y = Argument(text, x)
-                                e = Expression("y", y)
+                        k = kText.toFloat()
+                        h = hText.toFloat()
+                        r = rText.toFloat()
 
-                                Calculator4lineChartList.add(Point(xValue, e.calculate().toFloat(), ""))
+                        CoroutineScope(IO).launch {
+                            while(t <= 2){
+                                var xFormula = Argument("x=$h+$r*cos($t π)")
+                                e1 = Expression("x", xFormula)
 
-                                Log.d("FormulaTest", "Point added to list is: x: $xValue, y: " + e.calculate().toString())
-                                Log.d("FormulaTest", "Point added is in position ${Calculator4lineChartList.size}")
+                                xValue = e1.calculate().toFloat()
 
-                                xValue = floatAddition(xValue, xIncrement)
+                                var yFormula = Argument("y=$k+$r*sin($t π)")
+                                e2 = Expression("y", yFormula)
+
+                                yValue = e2.calculate().toFloat()
+
+                                Log.d("CircleTest", "h = $h")
+                                Log.d("CircleTest", "k = $k")
+                                Log.d("CircleTest", "r = $r")
+                                Log.d("CircleTest", "t = $t")
+                                Log.d("CircleTest", "x value: $xValue")
+                                Log.d("CircleTest", "y value: $yValue")
+                                Log.d("CircleTest", "-----")
+
+                                Calculator4lineChartList.add(Point(xValue, yValue))
+
+                                t = t + 0.025f
                             }
-                        } else {
-                            Toast.makeText(context, "Syötä kaava!", Toast.LENGTH_SHORT).show()
+
+                            kText = " "
+                            kText = ""
                         }
-
-                        xValue = xStart
-
-                        formula = text
-                        text = " "
-                        text = ""
                     }
                 ) {
                     Text("Piirrä kaavio")
@@ -191,17 +229,7 @@ fun GraphingCalculatorScreen4(navController: NavController) {
 
                 Button(
                     onClick = {
-                        if (Calculator4lineChartList.isNotEmpty()) {
-                            while(Calculator4lineChartList.isNotEmpty()) {
-                                Calculator4lineChartList.removeAt(Calculator4lineChartList.size -1)
-                            }
 
-                            text = " "
-                            text = ""
-                            formula = ""
-                        } else {
-                            Toast.makeText(context, "Taulukko on jo tyhjä!", Toast.LENGTH_SHORT).show()
-                        }
                     }
                 ) {
                     Text("Tyhjennä taulukko")
