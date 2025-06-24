@@ -186,10 +186,7 @@ fun GraphingCalculatorScreen4(navController: NavController) {
             Text(
                 modifier = Modifier.padding(20.dp),
                 fontSize = 20.sp,
-                text = "Ympyrän piirto esimerkki, käytetyt kaavat:" +
-                        "\n(x²-h) + (y²-k) = r² " +
-                        "\nx = h + r * cos(t),  t=[0-2π]" +
-                        "\ny = k + r * sin(t),  t=[0-2π]"
+                text = "Ympyrän piirto. Täydennä kaava piirtääksesi ympyrän."
             )
 
             Box(
@@ -204,7 +201,7 @@ fun GraphingCalculatorScreen4(navController: NavController) {
                     LineChart(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(350.dp),
+                            .height(500.dp),
                         lineChartData = data
                     )
                 }
@@ -247,12 +244,6 @@ fun GraphingCalculatorScreen4(navController: NavController) {
                     )
                 }
             }
-
-            /*Text(
-                modifier = Modifier.padding(0.dp, 15.dp, 0.dp, 0.dp),
-                text = "Täydennä kaava syöttämällä arvot kenttiin",
-                fontSize = 20.sp
-            ) */
 
             Row(
                 modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
@@ -313,22 +304,15 @@ fun GraphingCalculatorScreen4(navController: NavController) {
                 Button(
                     modifier = Modifier.padding(0.dp, 0.dp, 10.dp, 0.dp),
                     onClick = {
+
+
                         if(Calculator4lineChartList.isEmpty() && Calculator4lineChartListCenter.isEmpty()) {
                             if(floatCheck(kText) && floatCheck(hText) && floatCheck(rText)) {
                                 if(positiveNumberCheck(rText)) {
                                     Toast.makeText(context, "Ympyrää lasketaan, odota hetki!", Toast.LENGTH_SHORT).show()
 
-                                    //if(floatCheck(kText)) {
                                     k = kText.toFloat() * -1.0f
-                                    //} else {
-                                    //    Toast.makeText(context, "k arvoa ei voida hyväksyä, syötä desimaaliarvo", Toast.LENGTH_SHORT).show()
-                                    //}
-                                    //if(floatCheck(hText)) {
                                     h = hText.toFloat() * -1.0f
-                                    //} else {
-                                    //    Toast.makeText(context, "h arvoa ei voida hyväksyä, syötä desimaaliarvo", Toast.LENGTH_SHORT).show()
-                                    //}
-
                                     r = floatSquareRoot(rText.toFloat())
 
                                     if(r >= 100) {
@@ -358,10 +342,7 @@ fun GraphingCalculatorScreen4(navController: NavController) {
 
                                             yValue = e2.calculate().toFloat()
 
-                                            Log.d(
-                                                "CircleTest",
-                                                "Point added: ($xValue, $yValue) with t value = $t"
-                                            )
+                                            Log.d("CircleTest", "Point added: ($xValue, $yValue) with t value = $t")
 
                                             Calculator4lineChartList.add(Point(xValue, yValue))
 
@@ -434,14 +415,19 @@ fun GraphingCalculatorScreen4(navController: NavController) {
                 }
             }
 
+            Text(
+                modifier = Modifier.padding(0.dp, 50.dp, 0.dp, 0.dp),
+                fontSize = 20.sp,
+                text = "Esimerkissä käytetyt kaavat: " +
+                        "\n(x-h)² + (y-k)² = r² " +
+                        "\nx = h + r * cos(t),  t=[0-2π]" +
+                        "\ny = k + r * sin(t),  t=[0-2π]"
+            )
+
+            //hidden text component to update UI via changing its state
             Text(text = uiUpdate)
         }
     }
-}
-
-private fun floatAddition(numA: Float, numB: Float): Float {
-    var value = numA + numB
-    return value.formatToSinglePrecision().toFloat()
 }
 
 private fun floatSquareRoot(num: Float): Float {
