@@ -52,6 +52,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import org.mariuszgromada.math.mxparser.Argument
 import org.mariuszgromada.math.mxparser.Expression
+import kotlin.math.abs
 
 var Calculator4lineChartList = mutableListOf<Point>()
 var Calculator4lineChartListCenter = mutableListOf<Point>()
@@ -64,6 +65,7 @@ fun GraphingCalculatorScreen4(navController: NavController) {
     var rText by remember { mutableStateOf("") }
 
     var centerPoint by remember {mutableStateOf("")}
+    var radius by remember {mutableStateOf("")}
 
     var hDisplayText = ""
     var kDisplayText = ""
@@ -83,13 +85,7 @@ fun GraphingCalculatorScreen4(navController: NavController) {
 
     var uiUpdate by remember {mutableStateOf("")}
 
-    hDisplayText = if(hText == "") {
-        "-h"
-    } else if(hText == "-") {
-        "-h"
-    } else if(hText.toFloat() == 0.0f) {
-        "-0"
-    } else {
+    hDisplayText = if(floatCheck(hText)) {
         if(hText.toFloat() > 0.0f) {
             "+$hText"
         } else if (hText.toFloat() < 0.0f){
@@ -97,38 +93,30 @@ fun GraphingCalculatorScreen4(navController: NavController) {
         } else {
             "-h"
         }
+    } else {
+        "-h"
     }
 
-    kDisplayText = if(kText == "") {
-        "-k"
-    } else if(kText == "-") {
-        "-k"
-    } else if(kText.toFloat() == 0.0f) {
-        "-0"
-    } else {
+    kDisplayText = if(floatCheck(kText)) {
         if(kText.toFloat() > 0.0f) {
             "+$kText"
         } else if (kText.toFloat() < 0.0f){
             kText
         } else {
-            "-k"
+            "-h"
         }
+    } else {
+        "-h"
     }
 
-    rDisplayText = if(rText == "") {
-        "r"
-    } else if(rText == "-") {
-        "r"
-    } else if(rText.toFloat() == 0.0f) {
-        "0"
-    } else {
-        if(rText.toFloat() > 0.0f) {
+    rDisplayText = if(floatCheck(rText)) {
+        if(positiveNumberCheck(rText)) {
             rText
-        } else if (rText.toFloat() < 0.0f){
-            "-$rText"
         } else {
-            "-r"
+            "r²"
         }
+    } else {
+        "r²"
     }
 
     Box(
@@ -197,11 +185,11 @@ fun GraphingCalculatorScreen4(navController: NavController) {
 
             Text(
                 modifier = Modifier.padding(20.dp),
-                fontSize = 18.sp,
-                text = "Piirrä ympyrä kuvaajaan täydentämällä alla olevaa kaavaa "
-                        //"\n(x²-h) + (y²-k) = r² " +
-                        //"\nx = h + r * cos(t), jossa t=[0-2π]" +
-                        //"\ny = k + r * sin(t), jossa t=[0-2π]"
+                fontSize = 20.sp,
+                text = "Ympyrän piirto esimerkki, käytetyt kaavat:" +
+                        "\n(x²-h) + (y²-k) = r² " +
+                        "\nx = h + r * cos(t),  t=[0-2π]" +
+                        "\ny = k + r * sin(t),  t=[0-2π]"
             )
 
             Box(
@@ -225,20 +213,26 @@ fun GraphingCalculatorScreen4(navController: NavController) {
             Row() {
                 Column() {
                     Text(
-                        modifier = Modifier.width(150.dp),
+                        modifier = Modifier.width(170.dp),
                         text = "Kaava:",
                         fontSize = 20.sp
                     )
 
                     Text(
-                        modifier = Modifier.width(150.dp),
-                        text = "Keskipiste:",
+                        modifier = Modifier.width(170.dp),
+                        text = "Keskipiste (h,k):",
+                        fontSize = 20.sp
+                    )
+
+                    Text(
+                        modifier = Modifier.width(170.dp),
+                        text = "Säde r:",
                         fontSize = 20.sp
                     )
                 }
                 Column() {
                     Text(
-                        text = "(x$hDisplayText)² + (y$kDisplayText)² = $rDisplayText²",
+                        text = "(x$hDisplayText)² + (y$kDisplayText)² = $rDisplayText",
                         fontSize = 20.sp
                     )
 
@@ -246,82 +240,73 @@ fun GraphingCalculatorScreen4(navController: NavController) {
                         text = centerPoint,
                         fontSize = 20.sp
                     )
+
+                    Text(
+                        text = radius,
+                        fontSize = 20.sp
+                    )
                 }
             }
+
+            /*Text(
+                modifier = Modifier.padding(0.dp, 15.dp, 0.dp, 0.dp),
+                text = "Täydennä kaava syöttämällä arvot kenttiin",
+                fontSize = 20.sp
+            ) */
 
             Row(
                 modifier = Modifier.padding(0.dp, 10.dp, 0.dp, 0.dp)
             ) {
-                Column(){
-                    Text(
-                        modifier = Modifier
-                            .padding(10.dp, 13.dp, 10.dp, 0.dp)
-                            .height(50.dp)
-                            .width(80.dp),
-                        text = "Syötä h: ",
-                        fontSize = 20.sp
-                    )
-                    Text(
-                        modifier = Modifier
-                            .padding(10.dp, 13.dp, 10.dp, 0.dp)
-                            .height(50.dp)
-                            .width(80.dp),
-                        text = "Syötä k: ",
-                        fontSize = 20.sp
-                    )
-                    Text(
-                            modifier = Modifier
-                                .padding(10.dp, 13.dp, 10.dp, 0.dp)
-                                .height(50.dp)
-                                .width(80.dp),
-                    text = "Syötä r: ",
-                    fontSize = 20.sp
-                    )
-                }
-
-                Column() {
-                    TextField(
-                        modifier = Modifier
-                            .padding(5.dp)
-                            .height(50.dp)
-                            .width(100.dp),
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number
-                        ),
-                        value = hText,
-                        onValueChange = { newText ->
-                            hText = newText
-                        },
-                    )
-                    TextField(
-                        textStyle = TextStyle(fontSize = 15.sp),
-                        modifier = Modifier
-                            .padding(5.dp)
-                            .height(50.dp)
-                            .width(100.dp),
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number
-                        ),
-                        value = kText,
-                        onValueChange = { newText ->
-                            kText = newText
-                        }
-                    )
-                    TextField(
-                        textStyle = TextStyle(fontSize = 15.sp),
-                        modifier = Modifier
-                            .padding(5.dp)
-                            .height(50.dp)
-                            .width(100.dp),
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number
-                        ),
-                        value = rText,
-                        onValueChange = { newText ->
-                            rText = newText
-                        }
-                    )
-                }
+                TextField(
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .height(50.dp)
+                        .width(100.dp),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    value = hText,
+                    onValueChange = { newText ->
+                        hText = newText
+                    },
+                    label = {
+                        Text(text = "h arvo")
+                    },
+                )
+                TextField(
+                    textStyle = TextStyle(fontSize = 15.sp),
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .height(50.dp)
+                        .width(100.dp),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    value = kText,
+                    onValueChange = { newText ->
+                        kText = newText
+                    },
+                    label = {
+                        Text(text = "k arvo")
+                    },
+                )
+                TextField(
+                    textStyle = TextStyle(fontSize = 15.sp),
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .height(50.dp)
+                        .width(100.dp),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    value = rText,
+                    onValueChange = { newText ->
+                        rText = newText
+                    },
+                    label = {
+                        Text(text = "r² arvo")
+                    },
+                )
             }
 
             Row() {
@@ -329,54 +314,71 @@ fun GraphingCalculatorScreen4(navController: NavController) {
                     modifier = Modifier.padding(0.dp, 0.dp, 10.dp, 0.dp),
                     onClick = {
                         if(Calculator4lineChartList.isEmpty() && Calculator4lineChartListCenter.isEmpty()) {
-                            //if(rText.toFloat() < 2) {
-                            //    tIncrement = 0.05f
-                            //}
+                            if(floatCheck(kText) && floatCheck(hText) && floatCheck(rText)) {
+                                if(positiveNumberCheck(rText)) {
+                                    Toast.makeText(context, "Ympyrää lasketaan, odota hetki!", Toast.LENGTH_SHORT).show()
 
-                            if(kText.toFloat() > 0) {
-                                k = kText.toFloat() - kText.toFloat() - kText.toFloat()
-                            } else {
-                                k = kText.toFloat() + kText.toFloat() + kText.toFloat()
-                            }
+                                    //if(floatCheck(kText)) {
+                                    k = kText.toFloat() * -1.0f
+                                    //} else {
+                                    //    Toast.makeText(context, "k arvoa ei voida hyväksyä, syötä desimaaliarvo", Toast.LENGTH_SHORT).show()
+                                    //}
+                                    //if(floatCheck(hText)) {
+                                    h = hText.toFloat() * -1.0f
+                                    //} else {
+                                    //    Toast.makeText(context, "h arvoa ei voida hyväksyä, syötä desimaaliarvo", Toast.LENGTH_SHORT).show()
+                                    //}
 
-                            if(hText.toFloat() > 0) {
-                                h = hText.toFloat() - hText.toFloat() - hText.toFloat()
-                            } else {
-                                h = hText.toFloat() + hText.toFloat() + hText.toFloat()
-                            }
+                                    r = floatSquareRoot(rText.toFloat())
 
-                            r = rText.toFloat() * rText.toFloat()
+                                    if(r >= 100) {
+                                        tIncrement = 0.1f
+                                    } else if(r >= 50) {
+                                        tIncrement = 0.05f
+                                    } else {
+                                        tIncrement = 0.01f
+                                    }
 
-                            //Center dot
-                            Calculator4lineChartListCenter.add(Point(h+0.05f, k))
-                            Calculator4lineChartListCenter.add(Point(h, k-0.05f))
-                            Calculator4lineChartListCenter.add(Point(h-0.05f, k))
-                            Calculator4lineChartListCenter.add(Point(h, k-0.05f))
-                            Calculator4lineChartListCenter.add(Point(h+0.05f, k))
+                                    //Center dot
+                                    Calculator4lineChartListCenter.add(Point(h+0.05f, k))
+                                    Calculator4lineChartListCenter.add(Point(h, k-0.05f))
+                                    Calculator4lineChartListCenter.add(Point(h-0.05f, k))
+                                    Calculator4lineChartListCenter.add(Point(h, k-0.05f))
+                                    Calculator4lineChartListCenter.add(Point(h+0.05f, k))
 
-                            CoroutineScope(IO).launch {
-                                while(t <= 2){
-                                    var xFormula = Argument("x=$h+$r*cos($t π)")
-                                    e1 = Expression("x", xFormula)
+                                    CoroutineScope(IO).launch {
+                                        while (t < 2) {
+                                            var xFormula = Argument("x=$h+$r*cos($t π)")
+                                            e1 = Expression("x", xFormula)
 
-                                    xValue = e1.calculate().toFloat()
+                                            xValue = e1.calculate().toFloat()
 
-                                    var yFormula = Argument("y=$k+$r*sin($t π)")
-                                    e2 = Expression("y", yFormula)
+                                            var yFormula = Argument("y=$k+$r*sin($t π)")
+                                            e2 = Expression("y", yFormula)
 
-                                    yValue = e2.calculate().toFloat()
+                                            yValue = e2.calculate().toFloat()
 
-                                    Log.d("CircleTest", "Point added: ($xValue, $yValue)")
+                                            Log.d(
+                                                "CircleTest",
+                                                "Point added: ($xValue, $yValue) with t value = $t"
+                                            )
 
-                                    Calculator4lineChartList.add(Point(xValue, yValue))
+                                            Calculator4lineChartList.add(Point(xValue, yValue))
 
-                                    t = t + 0.01f
+                                            t = "%.2f".format(t + tIncrement).toFloat()
+                                        }
+
+                                        uiUpdate = " "
+                                        uiUpdate = ""
+                                    }
+                                    centerPoint = "($h,$k)"
+                                    radius = "%.2f".format(r)
+                                } else {
+                                    Toast.makeText(context, "r² ei voi olla negatiivinen", Toast.LENGTH_SHORT).show()
                                 }
-
-                                uiUpdate = " "
-                                uiUpdate = ""
+                            } else {
+                                Toast.makeText(context, "Ympyrää ei voitu piirtää, tarkista syötetyt arvot!", Toast.LENGTH_SHORT).show()
                             }
-                            centerPoint = "($h,$k)"
                         } else {
                             Toast.makeText(context, "Kaava piirretty jo, tyhjennä taulukko ja yritä uudestaan!", Toast.LENGTH_SHORT).show()
                         }
@@ -407,6 +409,7 @@ fun GraphingCalculatorScreen4(navController: NavController) {
                         rText = ""
                         centerPoint = ""
                         t = 0.0f
+                        radius = ""
                     }
                 ) {
                     Text("Tyhjennä kuvaaja")
@@ -439,4 +442,29 @@ fun GraphingCalculatorScreen4(navController: NavController) {
 private fun floatAddition(numA: Float, numB: Float): Float {
     var value = numA + numB
     return value.formatToSinglePrecision().toFloat()
+}
+
+private fun floatSquareRoot(num: Float): Float {
+    var value = 0f
+
+    if(num<0) {
+        var absNum = abs(num)
+        var eAbsSquareRoot = Expression("√$absNum")
+        value = eAbsSquareRoot.calculate().toFloat()//.formatToSinglePrecision().toFloat()
+    } else if(num>=0) {
+        var eSquareRoot = Expression("√$num")
+        value = eSquareRoot.calculate().toFloat()//.formatToSinglePrecision().toFloat()
+    }
+
+    return value.toFloat()
+}
+
+private fun floatCheck(str: String): Boolean {
+    val regex = Regex("[+-]?([0-9]*[.])?[0-9]+")
+    return str.matches(regex)
+}
+
+private fun positiveNumberCheck(str: String): Boolean {
+    val regex = Regex("^[+]?([.]\\d+|\\d+[.]?\\d*)\$")
+    return str.matches(regex)
 }
