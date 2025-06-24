@@ -24,7 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -149,6 +151,13 @@ fun GraphingCalculatorScreen3(navController: NavController) {
                 xAxisData = xAxisData,
                 yAxisData = yAxisData,
                 gridLines = GridLines()
+            )
+
+            Text(
+                modifier = Modifier.padding(10.dp, 20.dp, 0.dp, 0.dp),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                text = "Graafinen laskin 3: Kahden kaavan syöttö"
             )
 
             Text(

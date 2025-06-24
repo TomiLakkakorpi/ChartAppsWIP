@@ -1,6 +1,5 @@
 package com.example.barchartapp
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -68,7 +67,7 @@ var isChart1Altered = true
 var isChart2Altered = true
 
 @Composable
-fun GraphingCalculatorUIScreen(navController: NavController) {
+fun GraphingCalculatorScreen6(navController: NavController) {
 
     var text1 by remember { mutableStateOf("") }
     var text2 by remember { mutableStateOf("") }

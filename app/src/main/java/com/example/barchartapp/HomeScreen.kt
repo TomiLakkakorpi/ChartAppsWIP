@@ -271,7 +271,7 @@ fun HomeScreen(navController: NavController) {
                 ) {
                     Text(
                         fontSize = 13.sp,
-                        text = "Graphing Calculator V1 \nArvojen syöttö"
+                        text = "Graphing Calculator V1 \nYksi kaava"
                     )
                 }
 
@@ -290,7 +290,7 @@ fun HomeScreen(navController: NavController) {
                 ) {
                     Text(
                         fontSize = 13.sp,
-                        text = "Graphing Calculator V2 \nYksi kaava"
+                        text = "Graphing Calculator V2 \nYksi kaava, muokattava piirtoalue"
                     )
                 }
 
@@ -361,12 +361,12 @@ fun HomeScreen(navController: NavController) {
                         contentColor = Color.Black
                     ),
                     onClick = {
-                        navController.navigate(route = Screen.GraphingCalculatorUIScreen.route)
+                        navController.navigate(route = Screen.GraphingCalculatorScreen6.route)
                     }
                 ) {
                     Text(
                         fontSize = 12.sp,
-                        text = "Graphing Calculator Main"
+                        text = "Graphing Calculator V6 \nOminaisuudet Yhdistetty"
                     )
                 }
             }

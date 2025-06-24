@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,11 +43,6 @@ import co.yml.charts.ui.linechart.model.LinePlotData
 import co.yml.charts.ui.linechart.model.LineStyle
 import co.yml.charts.ui.linechart.model.SelectionHighlightPoint
 import co.yml.charts.ui.linechart.model.SelectionHighlightPopUp
-import co.yml.charts.ui.linechart.model.ShadowUnderLine
-import co.yml.charts.ui.wavechart.WaveChart
-import co.yml.charts.ui.wavechart.model.Wave
-import co.yml.charts.ui.wavechart.model.WaveChartData
-import co.yml.charts.ui.wavechart.model.WavePlotData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -186,7 +182,8 @@ fun GraphingCalculatorScreen4(navController: NavController) {
             Text(
                 modifier = Modifier.padding(20.dp),
                 fontSize = 20.sp,
-                text = "Ympyrän piirto. Täydennä kaava piirtääksesi ympyrän."
+                fontWeight = FontWeight.Bold,
+                text = "Graafinen laskin 4: Ympyrän piirto"
             )
 
             Box(

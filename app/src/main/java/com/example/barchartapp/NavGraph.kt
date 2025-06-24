@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.barchartapp.Screen.UserInputExample1
 
 @Composable
 fun SetupNavGraph(
@@ -128,9 +127,9 @@ fun SetupNavGraph(
         }
 
         composable(
-            route = Screen.GraphingCalculatorUIScreen.route
+            route = Screen.GraphingCalculatorScreen6.route
         ) {
-            GraphingCalculatorUIScreen(navController)
+            GraphingCalculatorScreen6(navController)
         }
     }
 }

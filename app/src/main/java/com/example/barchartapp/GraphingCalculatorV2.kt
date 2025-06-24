@@ -24,7 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 //YCharts Importit
@@ -117,6 +119,13 @@ fun GraphingCalculatorScreen2(navController: NavController) {
             )
 
             Text(
+                modifier = Modifier.padding(10.dp, 20.dp, 0.dp, 0.dp),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                text = "Graafinen laskin 2: Yhden kaavan syöttö, säädettävä piirtoalue"
+            )
+
+            Text(
                 modifier = Modifier.padding(10.dp),
                 text = "Piirretty Kaava: $formula"
             )
@@ -137,7 +146,7 @@ fun GraphingCalculatorScreen2(navController: NavController) {
             }
 
             TextField(
-                modifier = Modifier.width(200.dp),
+                modifier = Modifier.width(150.dp),
                 value = text,
                 onValueChange = { newText ->
                     text = newText
@@ -149,7 +158,9 @@ fun GraphingCalculatorScreen2(navController: NavController) {
 
             Row() {
                 Button(
-                    modifier = Modifier.padding(0.dp, 0.dp, 20.dp, 0.dp),
+                    modifier = Modifier
+                        .width(160.dp)
+                        .padding(0.dp, 0.dp, 20.dp, 0.dp),
                     onClick = {
                         formula = text
                         if(formula.isNotEmpty()){

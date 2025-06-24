@@ -22,7 +22,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 //YCharts Importit
@@ -109,6 +111,13 @@ fun GraphingCalculatorScreen1(navController: NavController) {
                 xAxisData = xAxisData,
                 yAxisData = yAxisData,
                 gridLines = GridLines()
+            )
+
+            Text(
+                modifier = Modifier.padding(10.dp, 20.dp, 0.dp, 0.dp),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                text = "Graafinen laskin 1: Yhden kaavan syöttö"
             )
 
             Text(
